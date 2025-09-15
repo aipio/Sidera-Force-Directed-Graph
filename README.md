@@ -2,7 +2,7 @@
 
 # Sidera
 
-![logo](https://raw.githubusercontent.com/aipio/Sidera-Force-Directed-Graph/cc6e26d409fba0c2a4ec46c857c129c9de78af6e/Sidera-logo.svg?token=BN35HCNKO6VKXLP5CDS47QLIZANQS)
+![](https://raw.githubusercontent.com/aipio/Sidera-Force-Directed-Graph/refs/heads/main/Sidera-logo.svg?token=GHSAT0AAAAAADHQJXLTPKHJGIOXZSX4K2NW2GIEODA)
 
 # How to use?
 Sidera is simple and intuitive to use, with almost no learning curve. We only need to switch between two modes in the bottom bar and use different mouse or touch screen operations to start sorting out the context.
