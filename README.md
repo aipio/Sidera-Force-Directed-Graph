@@ -83,8 +83,8 @@ An **HTML5-based** editable force-directed graph.
 - **E**: Sidebar  
 
 ## URL Parameters  
-- **Specify a JSON file**:  https://yourdomainname?**dataUrl=local-or-web-json-file**
-- **Preview Mode**:  https://yourdomainname?dataUrl=local-or-web-json-file&**preview**(Displays the tag reference table and allows screenshot capture)
+- **Specify a JSON file**:  https: //yourdomainname?**dataUrl=local-or-web-json-file**
+- **Preview Mode**:  https: //yourdomainname?dataUrl=local-or-web-json-file&**preview**(Displays the tag reference table and allows screenshot capture)
 ## Data Management  
 - **One-click export** of the current graph as a JSON file.  
 - **Save webpage as an image**:  
