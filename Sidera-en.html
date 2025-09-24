@@ -1,0 +1,4286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+html, body,
+button, a, input, select, textarea,
+#sidebar-toggle-btn, .hamburger-icon, .hamburger-icon span,
+.mode-btn, .data-btn, .tag-delete-btn, #searchBtn {
+  -webkit-tap-highlight-color: transparent !important;
+  tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+#sidebar-toggle-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+button:focus, a:focus,
+#sidebar-toggle-btn:focus, .mode-btn:focus, .data-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+button:active, #sidebar-toggle-btn:active, .mode-btn:active {
+  background-color: inherit;
+}
+
+</style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sidera</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQogICAgPCEtLSDlnIblvaLog4zmma/oibIgLS0+DQogICAgPGNpcmNsZSBjeD0iMjAwIiBjeT0iMjAwIiByPSIyMDAiIGZpbGw9IiMxMDE4MjEiIC8+DQogICAgDQogICAgPCEtLSDlha3ovrnlvaLkv53mjIHkuI3lj5ggLSDmtYXngbDoibIgLS0+DQogICAgPGcgaWQ9Im91dGVyLW1vbGVjdWxlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAsIDIwMCkiPg0KICAgICAgICA8cG9seWdvbiBwb2ludHM9IjExMi45OCw2NSAwLDEzMCAtMTEyLjU4LDY1IC0xMTIuNTgsLTY1IDAsLTEzMCAxMTIuNTgsLTY1IiBmaWxsPSJub25lIiBzdHJva2U9IiNBQUFBQUEiIHN0cm9rZS13aWR0aD0iMjUiPjwvcG9seWdvbj4NCiAgICA8L2c+DQoNCiAgICA8IS0tIOi/nuaOpeS4reW/g+WchuWSjOWkluWbtOWchueahOWFreadoee6vyAtLT4NCiAgICA8ZyBpZD0iY29ubmVjdGluZy1saW5lcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAwLCAyMDApIj4NCiAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMTAzLjkiIHkyPSI2MCIgc3Ryb2tlPSIjRkZBNTAwIiBzdHJva2Utd2lkdGg9IjIwIj48L2xpbmU+DQogICAgICAgIDxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxMjAiIHN0cm9rZT0iI0ZGQTUwMCIgc3Ryb2tlLXdpZHRoPSIyMCI+PC9saW5lPg0KICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSItMTAzLjkiIHkyPSI2MCIgc3Ryb2tlPSIjRkZBNTAwIiBzdHJva2Utd2lkdGg9IjIwIj48L2xpbmU+DQogICAgICAgIDxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9Ii0xMDMuOSIgeTI9Ii02MCIgc3Ryb2tlPSIjRkZBNTAwIiBzdHJva2Utd2lkdGg9IjIwIj48L2xpbmU+DQogICAgICAgIDxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSItMTIwIiBzdHJva2U9IiNGRkE1MDAiIHN0cm9rZS13aWR0aD0iMjAiPjwvbGluZT4NCiAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMTAzLjkiIHkyPSItNjAiIHN0cm9rZT0iI0ZGQTUwMCIgc3Ryb2tlLXdpZHRoPSIyMCI+PC9saW5lPg0KICAgIDwvZz4NCg0KICAgIDwhLS0g5YWt5Liq5a6e5b+D5ZyG5ZCR5Lit5b+D6Z2g5ouiIC0g5rWF54Gw6ImyIC0tPg0KICAgIDxnIGlkPSJvdXRlci1jaXJjbGVzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAsIDIwMCkiPg0KICAgICAgICA8Y2lyY2xlIGN4PSIxMDMuOSIgY3k9IjYwIiByPSIzOCIgZmlsbD0iI0NDQ0NDQyI+PC9jaXJjbGU+DQogICAgICAgIDxjaXJjbGUgY3g9IjAiIGN5PSIxMjAiIHI9IjM4IiBmaWxsPSIjQ0NDQ0NDIj48L2NpcmNsZT4NCiAgICAgICAgPGNpcmNsZSBjeD0iLTEwMy45IiBjeT0iNjAiIHI9IjM4IiBmaWxsPSIjQ0NDQ0NDIj48L2NpcmNsZT4NCiAgICAgICAgPGNpcmNsZSBjeD0iLTEwMy45IiBjeT0iLTYwIiByPSIzOCIgZmlsbD0iI0NDQ0NDQyI+PC9jaXJjbGU+DQogICAgICAgIDxjaXJjbGUgY3g9IjAiIGN5PSItMTIwIiByPSIzOCIgZmlsbD0iI0NDQ0NDQyI+PC9jaXJjbGU+DQogICAgICAgIDxjaXJjbGUgY3g9IjEwMy45IiBjeT0iLTYwIiByPSIzOCIgZmlsbD0iI0NDQ0NDQyI+PC9jaXJjbGU+DQogICAgPC9nPg0KICAgIA0KICAgIDwhLS0g5Lit5b+D5ZyGIC0g5LiN5bqU55So5ruk6ZWcIC0tPg0KICAgIDxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iMzgiIGZpbGw9IiNGRkQ3MDAiPjwvY2lyY2xlPg0KPC9zdmc+" type="image/x-icon"/>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #graph-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+            background-color: #0d1117;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #search-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            transform: none;
+            max-width: calc(100% - 140px);
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: none;
+            padding: 8px;
+            border-radius: 99px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        body.sidebar-open #search-container {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        #searchInput {
+            background-color: transparent;
+            border: none;
+            color: #c9d1d9;
+            outline: none;
+            font-size: 16px;
+            padding: 0 8px;
+            flex-grow: 1;
+            min-width: 80px;
+        }
+        
+        #searchInput::-webkit-search-cancel-button {
+           -webkit-appearance: none;
+        }
+
+        #searchBtn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 99px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: auto;
+            text-align: center;
+            flex-shrink: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        #searchBtn:hover {
+            background-color: #2ea043;
+        }
+        
+        #searchBtn.cancel-search {
+            background-color: #FF1B47;
+        }
+        #searchBtn.cancel-search:hover {
+            background-color: #ff4d6d;
+        }
+
+        #sidebar-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            padding: 0;
+        }
+
+        .hamburger-icon {
+            width: 30px;
+            height: 24px;
+            position: relative;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            position: absolute;
+            height: 4px;
+            width: 100%;
+            background: #c9d1d9;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .hamburger-icon span:nth-child(1) { top: 0px; }
+        .hamburger-icon span:nth-child(2) { top: 10px; }
+        .hamburger-icon span:nth-child(3) { top: 20px; }
+
+        #sidebar-toggle-btn.open .hamburger-icon span:nth-child(1) {
+            top: 10px;
+            transform: rotate(135deg);
+        }
+
+        #sidebar-toggle-btn.open .hamburger-icon span:nth-child(2) {
+            opacity: 0;
+            left: -30px;
+        }
+
+        #sidebar-toggle-btn.open .hamburger-icon span:nth-child(3) {
+            top: 10px;
+            transform: rotate(-135deg);
+        }
+
+        #config-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 300px;
+            background-color: rgba(49, 49, 49, 0.259);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 99;
+            padding: 20px;
+            padding-top: 80px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        #config-sidebar.open {
+            transform: translateX(0);
+        }
+        
+        body.adjusting-param #config-sidebar {
+            background-color: transparent !important;
+            border-left-color: transparent !important;
+            backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+
+        body.adjusting-param #config-panel > * {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity: 0.2s ease-in-out;
+        }
+
+        body.adjusting-param #config-panel > .is-adjusting {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        body.adjusting-param #sidebar-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #config-sidebar::-webkit-scrollbar { width: 8px; }
+        #config-sidebar::-webkit-scrollbar-track {
+            background: transparent; border-radius: 4px;
+        }
+        #config-sidebar::-webkit-scrollbar-thumb {
+            background: #444c56; border-radius: 4px;
+        }
+        #config-sidebar::-webkit-scrollbar-thumb:hover { background: #2ecc71; }
+
+        #sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 98;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        #sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #config-panel {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+            font-size: 14px;
+            color: #c9d1d9;
+            backdrop-filter: none;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            padding-bottom: 120px; 
+        }
+
+        .config-item { display: flex; flex-direction: column; gap: 6px; }
+        .config-item label { font-size: 12px; color: #8b949e; }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .config-item input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #444c56;
+            outline: none;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+
+        .config-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; 
+            appearance: none;
+            width: 18px; 
+            height: 18px;
+            background: #1284FF;
+            cursor: pointer; 
+            border-radius: 50%;
+            border: 9px solid #1170D5;
+        }
+        .config-item input[type="range"]::-moz-range-thumb {
+            width: 18px; 
+            height: 18px;
+            background: #1284FF;
+            cursor: pointer; 
+            border-radius: 50%;
+            border: 9px solid #1170D5;
+        }
+        
+        .control-stack {
+            background-color: #000000;
+            padding: 10px 15px;
+            border-radius: 12px;
+            position: relative;
+            z-index: 101;
+        }
+
+        .value-display {
+            width: 50px;
+            text-align: right;
+            font-size: 16px;
+            color: #c9d1d9;
+            flex-shrink: 0;
+            font-family: "Microsoft YaHei UI Bold", "微软雅黑", sans-serif;
+            font-weight: bold;
+        }
+
+        .tag-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        #tagNameInput, #graphTitleInput {
+            background-color: rgba(30,30,30,0.8);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 6px 10px;
+            color: #c9d1d9;
+            outline: none;
+            box-sizing: border-box;
+            height: 34px;
+            backdrop-filter: blur(5px);
+            flex: 1;
+            min-width: 50px;
+            font-size: 14px;
+        }
+        
+        #tagColorInput, #lineColorInput {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 34px;
+            height: 34px;
+            background-color: transparent;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            cursor: pointer;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+            transition: transform .12s ease, background-color .12s ease, box-shadow .12s ease;
+            flex-shrink: 0;
+        }
+        #tagColorInput:hover, #lineColorInput:hover {
+            background-color: rgba(44,44,44,0.85);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+        #tagColorInput:active, #lineColorInput:active { transform: translateY(0); }
+        #tagColorInput:focus-visible, #lineColorInput:focus-visible {
+            outline: 2px solid #2ecc7133;
+            box-shadow: 0 0 0 3px #2ecc7122, 0 6px 16px rgba(0,0,0,0.25);
+        }
+        #tagColorInput::-webkit-color-swatch-wrapper, #lineColorInput::-webkit-color-swatch-wrapper {
+            padding: 4px;
+            border-radius: 12px;
+        }
+        #tagColorInput::-webkit-color-swatch, #lineColorInput::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        #tagColorInput::-moz-color-swatch, #lineColorInput::-moz-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+
+        #saveTagBtn, .data-btn, #togglePulseBtn, #toggleImageClipBtn, #toggleArrowBtn, #toggleRelationsBtn, #saveTitleBtn, #resetLineColorBtn {
+            background-color: #30363d;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 0 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform .12s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #saveTagBtn, #saveTitleBtn {
+            width: auto;
+        }
+        
+        #togglePulseBtn, #toggleImageClipBtn, #toggleArrowBtn, #toggleRelationsBtn, #resetLineColorBtn {
+            flex: 1;
+        }
+
+        .data-actions .data-btn {
+            flex: 1;
+        }
+        
+        #saveTagBtn:hover, .data-btn:hover, #togglePulseBtn:hover, #toggleImageClipBtn:hover, #toggleArrowBtn:hover, #toggleRelationsBtn:hover, #resetLineColorBtn:hover { background-color: #444c56; transform: translateY(-1px); }
+        #saveTagBtn:active, .data-btn:active, #togglePulseBtn:active, #toggleImageClipBtn:active, #toggleArrowBtn:active, #toggleRelationsBtn:active, #saveTitleBtn:active, #resetLineColorBtn:active { transform: translateY(0); }
+
+        #saveTitleBtn.save { background-color: #2ecc71; }
+        #saveTitleBtn.save:hover { background-color: #2ea043; transform: translateY(-1px); }
+        #saveTitleBtn.cancel { background-color: #d13030; }
+        #saveTitleBtn.cancel:hover { background-color: #e04444; transform: translateY(-1px); }
+        
+        #exportBtn {
+            background-color: #2ecc71;
+        }
+        #exportBtn:hover {
+            background-color: #2ea043;
+        }
+        #importBtn {
+            background-color: #1385FF;
+        }
+        #importBtn:hover {
+            background-color: #0f74e6;
+        }
+
+        #tag-list {
+            margin-top: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        #tag-list::-webkit-scrollbar { width: 6px; }
+        #tag-list::-webkit-scrollbar-track {
+            background: transparent; border-radius: 3px;
+        }
+        #tag-list::-webkit-scrollbar-thumb {
+            background: #444c56; border-radius: 3px;
+        }
+        #tag-list::-webkit-scrollbar-thumb:hover { background: #2ecc71; }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background-color: #161b22;
+            margin-bottom: 6px;
+            border: 1px solid #30363d;
+        }
+        .tag-color-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            border: 1px solid #30363d;
+            flex-shrink: 0;
+        }
+        
+        .tag-delete-btn {
+            background-color: transparent;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .tag-delete-btn:hover {
+            background-color: #d13030;
+            color: white;
+        }
+
+        #info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(30, 30, 30, 0.8);
+            border: none;
+            padding: 8px;
+            border-radius: 99px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            background-color: transparent;
+            color: #c9d1d9;
+            border: none;
+            border-radius: 99px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .mode-btn.active {
+            background-color: #1284FF;
+            color: #ffffff;
+        }
+        
+        .edit-container, .bg-rect-edit-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+            transform: translate(-50%, -50%); 
+            align-items: center;
+            padding: 12px;
+            background-color: rgba(30,30,30,0.8);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .edit-input, .image-url-input, .bg-rect-edit-container input, .bg-rect-edit-container select {
+            width: 100%;
+        }
+        .edit-input, .image-url-input, .tag-selector, .tag-controls button,
+        .bg-rect-edit-container select, .bg-rect-edit-container button {
+            background-color: rgba(30,30,30,0.8);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 6px 10px;
+            color: #c9d1d9;
+            outline: none;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .edit-input { text-align: center; }
+
+        .tag-controls {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            width: 100%;
+        }
+
+        #confirmBtn, #editNodeBtn, #deleteNodeBtn, #cancelBtn, .relation-edit-container button, .bg-rect-edit-container button {
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #confirmBtn, #editNodeBtn, .bg-rect-save-btn {
+            background-color: #2ecc71;
+        }
+        #deleteNodeBtn, #cancelBtn, .bg-rect-delete-btn {
+            background-color: #d13030;
+        }
+        #deleteNodeBtn:hover, #cancelBtn:hover, .bg-rect-delete-btn:hover { background-color: #e04444; }
+        #confirmBtn:hover, #editNodeBtn:hover, .bg-rect-save-btn:hover { background-color: #2ea043; }
+
+        .relation-edit-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+            align-items: center;
+            padding: 12px;
+            background-color: rgba(30,30,30,0.8);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .relation-edit-container input {
+            background-color: rgba(30,30,30,0.8);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 6px 10px;
+            color: #c9d1d9;
+            outline: none;
+            box-sizing: border-box;
+            text-overflow: ellipsis;
+        }
+        .relation-edit-container button {
+            background-color: #2ecc71;
+        }
+        .relation-edit-container button:hover { background-color: #2ea043; }
+
+        body.preview-mode #info-panel,
+        body.preview-mode #search-container,
+        body.preview-mode #sidebar-toggle-btn,
+        body.preview-mode #config-sidebar,
+        body.preview-mode #sidebar-overlay {
+            display: none !important;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 99px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+            top: 30px;
+        }
+
+        .notification.error {
+            background-color: #d13030;
+        }
+
+        .powered-by {
+            text-align: center;
+            font-size: 12px;
+            color: #8b949e;
+            margin-top: 20px;
+        }
+        
+        #preview-info-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #preview-info-toggle svg {
+            cursor: pointer;
+        }
+        #preview-info-toggle:hover {
+            opacity: 1;
+        }
+        body.preview-mode #preview-info-toggle {
+            display: block;
+        }
+
+        #preview-info-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 15px;
+            padding-bottom: 15px; /* MODIFIED: Provide consistent padding */
+            z-index: 1000;
+            cursor: move;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px black, 0 0 8px black;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            width: 280px;
+            max-width: 90vw;
+            box-sizing: border-box;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            transition: border-color 0.2s, background-color 0.2s, backdrop-filter 0.2s, -webkit-backdrop-filter 0.2s;
+        }
+        #preview-info-panel:hover {
+            border-color: rgba(128, 128, 128, 0.5);
+            background-color: rgba(30, 30, 30, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        #preview-title {
+            margin: 0 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+            font-size: 16px;
+        }
+        
+        #preview-tag-list {
+            height: 70px; /* MODIFIED: Changed from max-height for JS control */
+            overflow-y: auto;
+            padding-right: 10px;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+        }
+        
+        /* NEW: Styles for the resizer */
+        #preview-info-panel .resizer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            cursor: ns-resize;
+            z-index: 1001;
+        }
+
+        #preview-tag-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #preview-tag-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #preview-tag-list::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 3px;
+            transition: background 0.2s ease-in-out;
+        }
+        #preview-info-panel:hover #preview-tag-list::-webkit-scrollbar-thumb {
+            background: rgba(128, 128, 128, 0.5);
+        }
+
+        .preview-tag-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .preview-tag-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="graph-container">
+        <canvas id="graphCanvas"></canvas>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <div id="search-container">
+        <input type="text" id="searchInput" placeholder="Search nodes..." autocomplete="off">
+        <button id="searchBtn">
+             <svg id="magnifying-glass-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2"/>
+            </svg>
+        </button>
+    </div>
+
+    <input type="file" id="importFileInput" style="display: none;" accept=".json">
+
+    <button id="sidebar-toggle-btn">
+        <div class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+
+    <div id="sidebar-overlay"></div>
+    <div id="config-sidebar">
+        <div id="config-panel">
+            <h3 style="margin-top:0;">Settings Panel</h3>
+            <!-- Sliders Group -->
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="repulsionStrength">Repulsion Strength</label>
+                    <div class="input-group">
+                        <input type="range" id="repulsionStrength" min="0" max="5" step="0.1" value="1">
+                        <span id="repulsionStrengthValue" class="value-display">1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="mouseAttraction">Mouse Attraction</label>
+                    <div class="input-group">
+                        <input type="range" id="mouseAttraction" min="0" max="1" step="0.01" value="0.05">
+                        <span id="mouseAttractionValue" class="value-display">0.05</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="linkIncreaseRate">Node Size Ratio (%)</label>
+                    <div class="input-group">
+                        <input type="range" id="linkIncreaseRate" min="0" max="100" value="5">
+                        <span id="linkIncreaseRateValue" class="value-display">5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="titleSize">Title Size</label>
+                    <div class="input-group">
+                        <input type="range" id="titleSize" min="5" max="30" step="1" value="10">
+                        <span id="titleSizeValue" class="value-display">10</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="bgRectTitleSize">Background Title Size</label>
+                    <div class="input-group">
+                        <input type="range" id="bgRectTitleSize" min="8" max="40" step="1" value="14">
+                        <span id="bgRectTitleSizeValue" class="value-display">14</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="relationSize">Relation Text Size</label>
+                    <div class="input-group">
+                        <input type="range" id="relationSize" min="5" max="25" step="1" value="10">
+                        <span id="relationSizeValue" class="value-display">10</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="lineWidth">Line Width</label>
+                    <div class="input-group">
+                        <input type="range" id="lineWidth" min="0.1" max="5" step="0.1" value="0.5">
+                        <span id="lineWidthValue" class="value-display">0.5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="maxLinkDistance">Max Link Distance</label>
+                    <div class="input-group">
+                        <input type="range" id="maxLinkDistance" min="50" max="500" step="10" value="200">
+                        <span id="maxLinkDistanceValue" class="value-display">200</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="imageNodeSize">Image Node Size</label>
+                    <div class="input-group">
+                        <input type="range" id="imageNodeSize" min="10" max="100" value="30">
+                        <span id="imageNodeSizeValue" class="value-display">30</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label for="arrowSize">Arrow Size</label>
+                    <div class="input-group">
+                        <input type="range" id="arrowSize" min="2" max="20" step="1" value="8">
+                        <span id="arrowSizeValue" class="value-display">8</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toggles Group -->
+            <div class="control-stack">
+                <div class="config-item">
+                    <label>Relation Display</label>
+                    <div class="input-group">
+                         <button id="toggleRelationsBtn" class="data-btn">Relations: Off</button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label>Relation Arrows</label>
+                    <div class="input-group">
+                         <button id="toggleArrowBtn" class="data-btn">Show Arrows: On</button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label>Animation Effects</label>
+                    <div class="input-group">
+                        <button id="togglePulseBtn" class="data-btn">Pulse Animation: On</button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-stack">
+                <div class="config-item">
+                    <label>Image Node Style</label>
+                    <div class="input-group">
+                        <button id="toggleImageClipBtn" class="data-btn">Circular Clip: On</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Group -->
+            <div class="config-item">
+                <label>Tag Management</label>
+                <div class="tag-input-group">
+                    <input type="text" id="tagNameInput" placeholder="Enter tag name">
+                    <input type="color" id="tagColorInput" value="#2ecc71">
+                    <button id="saveTagBtn">Save</button>
+                </div>
+            </div>
+            <div id="tag-list" class="config-item">
+            </div>
+            <div class="config-item">
+                <label>Line Color Management</label>
+                <div class="input-group">
+                    <input type="color" id="lineColorInput" value="#30363d">
+                    <button id="resetLineColorBtn">Default</button>
+                </div>
+            </div>
+            <div class="config-item">
+                <label>Data Management</label>
+                <div class="input-group">
+                    <input type="text" id="graphTitleInput" placeholder="Graph Title">
+                    <button id="saveTitleBtn">Save</button>
+                </div>
+            </div>
+            <div class="config-item">
+                <div class="input-group data-actions">
+                    <button id="importBtn" class="data-btn">Import</button>
+                    <button id="exportBtn" class="data-btn">Export</button>
+                </div>
+                <div class="powered-by">Powered by Sidera</div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="info-panel">
+        <button id="defaultModeBtn" class="mode-btn active">Default</button>
+        <button id="drawModeBtn" class="mode-btn">Connect</button>
+        <button id="backgroundModeBtn" class="mode-btn">Background</button>
+    </div>
+    
+    <div id="preview-info-toggle">
+        <svg id="eye-icon-open" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="36" height="36" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        <svg id="eye-icon-closed" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="36" height="36" viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+        <!-- NEW: Screenshot mode icon -->
+        <svg id="screenshot-mode-btn" style="margin-top: 10px; display: block;" xmlns="http://www.w3.org/2000/svg" width="36" height="32" viewBox="0 0 149 132">
+            <path fill="#FFFFFF" d="M143.209,105.968c0,6.25-5.113,11.364-11.363,11.364H18.203c-6.25 0-11.363-5.113-11.363-11.364v-86.37c0-6.25,5.113-11.363 11.363-11.363h113.643c6.25,0,11.363,5.113,11.363,11.363V105.968z M18.203,17.326c-1.207,0-2.271,1.068-2.271,2.271v86.37c0,1.207,1.065 2.271,2.271,2.271h113.643c1.203,0,2.274-1.064 2.274-2.271v-86.37c0-1.203-1.071-2.271-2.274-2.271H18.203z M38.661,53.691c-7.529,0-13.641-6.108-13.641-13.635s6.112-13.638,13.641-13.638 c7.526,0,13.632,6.111,13.632,13.638S46.188,53.691,38.661,53.691z M125.025,99.15H25.02V85.51l22.73-22.724l11.363,11.36l36.365-36.361l29.547,29.547V99.15z"/>
+        </svg>
+    </div>
+    <div id="preview-info-panel" style="display: none;">
+        <h4 id="preview-title"></h4>
+        <div id="preview-tag-list"></div>
+    </div>
+
+
+    <script>
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        const infoPanel = document.getElementById('info-panel');
+        const body = document.body;
+
+        const defaultModeBtn = document.getElementById('defaultModeBtn');
+        const drawModeBtn = document.getElementById('drawModeBtn');
+        const backgroundModeBtn = document.getElementById('backgroundModeBtn');
+        
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+
+
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+        const configSidebar = document.getElementById('config-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        
+        const repulsionStrengthEl = document.getElementById('repulsionStrength');
+        const repulsionStrengthValueEl = document.getElementById('repulsionStrengthValue');
+        const linkIncreaseRateEl = document.getElementById('linkIncreaseRate');
+        const linkIncreaseRateValueEl = document.getElementById('linkIncreaseRateValue');
+        const titleSizeEl = document.getElementById('titleSize');
+        const titleSizeValueEl = document.getElementById('titleSizeValue');
+        const bgRectTitleSizeEl = document.getElementById('bgRectTitleSize');
+        const bgRectTitleSizeValueEl = document.getElementById('bgRectTitleSizeValue');
+        const relationSizeEl = document.getElementById('relationSize');
+        const relationSizeValueEl = document.getElementById('relationSizeValue');
+        const lineWidthEl = document.getElementById('lineWidth');
+        const lineWidthValueEl = document.getElementById('lineWidthValue');
+        const maxLinkDistanceEl = document.getElementById('maxLinkDistance');
+        const maxLinkDistanceValueEl = document.getElementById('maxLinkDistanceValue');
+        const imageNodeSizeEl = document.getElementById('imageNodeSize');
+        const imageNodeSizeValueEl = document.getElementById('imageNodeSizeValue');
+        const mouseAttractionEl = document.getElementById('mouseAttraction');
+        const mouseAttractionValueEl = document.getElementById('mouseAttractionValue');
+        const togglePulseBtn = document.getElementById('togglePulseBtn');
+        const toggleImageClipBtn = document.getElementById('toggleImageClipBtn');
+        const toggleRelationsBtn = document.getElementById('toggleRelationsBtn');
+        const toggleArrowBtn = document.getElementById('toggleArrowBtn');
+        const arrowSizeEl = document.getElementById('arrowSize');
+        const arrowSizeValueEl = document.getElementById('arrowSizeValue');
+
+
+        const tagNameInput = document.getElementById('tagNameInput');
+        const tagColorInput = document.getElementById('tagColorInput');
+        const saveTagBtn = document.getElementById('saveTagBtn');
+        const tagListContainer = document.getElementById('tag-list');
+        const lineColorInput = document.getElementById('lineColorInput');
+        const resetLineColorBtn = document.getElementById('resetLineColorBtn');
+
+
+        const importBtn = document.getElementById('importBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importFileInput = document.getElementById('importFileInput');
+
+        const graphTitleInput = document.getElementById('graphTitleInput');
+        const saveTitleBtn = document.getElementById('saveTitleBtn');
+        
+        const svgSearch = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2"/></svg>`;
+        const svgCancel = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"><g style="fill:currentColor" transform="scale(2.81 2.81)"><rect x="-9.61" y="35.97" width="109.22" height="18.05" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -18.6396 44.9976)"/><rect x="35.97" y="-9.61" width="18.05" height="109.22" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -18.6396 44.9996)"/></g></svg>`;
+        const svgConfirmCheck = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 72 72"><path fill="currentColor" d="M57.658,12.643c1.854,1.201,2.384,3.678,1.183,5.532l-25.915,40c-0.682,1.051-1.815,1.723-3.064,1.814 C29.764,59.997,29.665,60,29.568,60c-1.146,0-2.241-0.491-3.003-1.358L13.514,43.807c-1.459-1.659-1.298-4.186,0.36-5.646 c1.662-1.46,4.188-1.296,5.646,0.361l9.563,10.87l23.043-35.567C53.329,11.971,55.806,11.442,57.658,12.643z"/></svg>`;
+        const svgDelete = `<svg width="18" height="18" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12.41,5.58l-1.34,8c-0.0433,0.2368-0.2493,0.4091-0.49,0.41H4.42c-0.2407-0.0009-0.4467-0.1732-0.49-0.41l-1.34-8 C2.5458,5.3074,2.731,5.0506,3.0035,5.0064C3.0288,5.0023,3.0544,5.0002,3.08,5h8.83c0.2761-0.0036,0.5028,0.2174,0.5064,0.4935 C12.4168,5.5225,12.4146,5.5514,12.41,5.58z M13,3.5C13,3.7761,12.7761,4,12.5,4h-10C2.2239,4,2,3.7761,2,3.5S2.2239,3,2.5,3H5V1.5 C5,1.2239,5.2239,1,5.5,1h4C9.7761,1,10,1.2239,10,1.5V3h2.5C12.7761,3,13,3.2239,13,3.5z M9,3V2H6v1H9z"/></svg>`;
+        const svgConfirmSave = `<svg fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,20V8.414a1,1,0,0,0-.293-.707L16.293,3.293A1,1,0,0,0,15.586,3H4A1,1,0,0,0,3,4V20a1,1,0,0,0,1,1H20A1,1,0,0,0,21,20ZM9,8h4a1,1,0,0,1,0,2H9A1,1,0,0,1,9,8Zm7,11H8V15a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1Z"/></svg>`;
+        
+        const hyperlinkPath = new Path2D("M60.54,34.07A7.65,7.65,0,0,1,49.72,23.25l13-12.95a35.38,35.38,0,0,1,49.91,0l.07.08a35.37,35.37,0,0,1-.07,49.83l-13,12.95A7.65,7.65,0,0,1,88.81,62.34l13-13a20.08,20.08,0,0,0,0-28.23l-.11-.11a20.08,20.08,0,0,0-28.2.07l-12.95,13Zm14,3.16A7.65,7.65,0,0,1,85.31,48.05L48.05,85.31A7.65,7.65,0,0,1,37.23,74.5L74.5,37.23ZM62.1,89.05A7.65,7.65,0,0,1,72.91,99.87l-12.7,12.71a35.37,35.37,0,0,1-49.76.14l-.28-.27a35.38,35.38,0,0,1,.13-49.78L23,50A7.65,7.65,0,1,1,33.83,60.78L21.12,73.49a20.09,20.09,0,0,0,0,28.25l0,0a20.07,20.07,0,0,0,28.27,0L62.1,89.05Z");
+        
+        let isPreviewMode = false;
+        let isScreenshotMode = false; // NEW state for screenshot mode
+        let width, height;
+        let dpr = window.devicePixelRatio || 1;
+
+        function resizeCanvas() {
+            // In screenshot mode, dpr is set externally. Otherwise, calculate it.
+            if (!isScreenshotMode) {
+                dpr = window.devicePixelRatio || 1;
+            }
+            width = window.innerWidth;
+            height = window.innerHeight;
+        
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+        
+            canvas.width = Math.round(width * dpr);
+            canvas.height = Math.round(height * dpr);
+        
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        /**
+         * Helper function to convert hex color to rgba string.
+         * This is the core of the fix for the iOS rendering issue.
+         * @param {string} hex - The hex color string (e.g., '#ff0000').
+         * @param {number} alpha - The opacity value (0.0 to 1.0).
+         * @returns {string} The resulting rgba color string.
+         */
+        function hexToRgba(hex, alpha) {
+            if (!hex || !/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+                // Fallback for invalid hex, e.g., default color
+                return `rgba(201, 209, 217, ${alpha})`; 
+            }
+            let c = hex.substring(1).split('');
+            if (c.length === 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c = '0x' + c.join('');
+            const r = (c >> 16) & 255;
+            const g = (c >> 8) & 255;
+            const b = c & 255;
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        const numNodes = 50;
+        const baseNodeRadius = 5;
+        const defaultLineColor = '#30363d';
+        let repulsionStrength = parseFloat(repulsionStrengthEl.value);
+        let linkIncreaseRate = parseFloat(linkIncreaseRateEl.value) / 100;
+        let titleSize = parseInt(titleSizeEl.value);
+        let bgRectTitleSize = parseInt(bgRectTitleSizeEl.value);
+        let relationSize = parseInt(relationSizeEl.value);
+        let lineWidth = parseFloat(lineWidthEl.value);
+        let maxLinkDistance = parseInt(maxLinkDistanceEl.value);
+        let repulsionRadius = maxLinkDistance * 3;
+        let imageNodeSize = parseInt(imageNodeSizeEl.value);
+        let isPulseAnimationEnabled = true;
+        let isImageClippingEnabled = true;
+        let showAllRelations = false;
+        let isArrowVisible = true;
+        let arrowSize = parseInt(arrowSizeEl.value);
+        let mouseAttractionStrength = parseFloat(mouseAttractionEl.value);
+        let lineColor = defaultLineColor;
+        
+        const fixedNodeRepulsionMultiplier = 2; 
+        const anchorNodeRepulsionMultiplier = 8;
+        const linkParticleSpeed = 0.05;
+        const linkStrength = 0.005;
+        const friction = 0.95;
+        const particleSpeedPixelsPerFrame = 10;
+        const nodeGlowFadeRate = 0.05;
+        const linkGlowFadeRate = 0.05;
+        let nextNodeId = 0; 
+
+        let graphTitle = '';
+        let savedGraphTitle = '';
+
+        let tags = [];
+        let nodes = [];
+        let links = [];
+        let backgroundRects = [];
+        
+        let searchGlow = { alpha: 0, direction: 1 };
+        let lastTouchDistance = null;
+        let lastTap = 0;
+        let longPressTimeout = null;
+        let touchStartPos = null;
+        let isZooming = false; 
+
+        let isFocusModeActive = false;
+        let focusedElements = new Set();
+
+
+        function initializeDefaultGraph() {
+            nodes.length = 0;
+            links.length = 0;
+            tags.length = 0;
+            backgroundRects.length = 0;
+            nextNodeId = 0;
+            graphTitle = '';
+            savedGraphTitle = '';
+            graphTitleInput.value = '';
+            lineColor = defaultLineColor;
+            lineColorInput.value = defaultLineColor;
+
+
+            for (let i = 0; i < numNodes; i++) {
+                nodes.push({
+                    id: nextNodeId++,
+                    name: `Node ${i + 1}`,
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: 0,
+                    vy: 0,
+                    connectionCount: 0,
+                    radius: baseNodeRadius,
+                    isDragging: false,
+                    glowAlpha: 0,
+                    isNew: false,
+                    isFixed: false,
+                    isAnchor: false,
+                    isHighlighted: false,
+                    fixType: null,
+                    wobbleOffset: { x: 0, y: 0 },
+                    tag: null,
+                    imageUrl: null,
+                    image: null,
+                    isSearchResult: false,
+                    isRectSelected: false,
+                    hyperlink: null,
+                    opacity: 1, 
+                    targetOpacity: 1
+                });
+            }
+
+            for (let i = 0; i < numNodes; i++) {
+                for (let j = i + 1; j < numNodes; j++) {
+                    if (Math.random() < 0.1) {
+                        const sourceNode = nodes[i];
+                        const targetNode = nodes[j];
+                        links.push({
+                            source: sourceNode,
+                            target: targetNode,
+                            relation: {
+                                [sourceNode.id]: `From ${sourceNode.name} to ${targetNode.name}`,
+                                [targetNode.id]: null
+                            },
+                            pulse: null,
+                            linkGlowAlpha: 0,
+                            lastPulseTime: 0,
+                            isHighlighted: false,
+                            opacity: 1,
+                            targetOpacity: 1
+                        });
+                        sourceNode.connectionCount++;
+                        targetNode.connectionCount++;
+                    }
+                }
+            }
+            nodes.forEach(node => {
+                node.radius = baseNodeRadius * (1 + node.connectionCount * linkIncreaseRate);
+            });
+            updateSaveTitleButtonUI();
+        }
+        
+        let scale = 1;
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let lastPanMouseX = 0;
+        let lastPanMouseY = 0;
+        let mouse = { x: 0, y: 0, isDown: false, lastX: 0, lastY: 0 };
+        let draggedNode = null;
+        let hoverNode = null;
+        let hoverLink = null;
+        let lastHoveredNode = null;
+        let hoverOriginalRadius = 0;
+        let editingInput = null;
+        let editingNode = null;
+        let editingRelation = null;
+
+        let currentMode = 'default';
+        let isGraphPaused = false;
+        let drawSourceNode = null;
+        let drawTargetNode = null;
+        let drawLineGlowAlpha = 0;
+        let cutLineStart = null;
+        let isCutting = false;
+        let glowDirection = 1;
+        const wobbleIntensity = 1.0;
+        
+        let isShiftDragging = false;
+        let dragStartPos = null;
+
+        // --- Background Mode State ---
+        let isDrawingBgRect = false;
+        let bgRectStartPoint = null; // In graph coordinates
+        let currentBgRect = null; // Temp rect being drawn, in graph coordinates
+        let editingBgRect = null; // The rect currently being edited
+        let isTwoClickRectDraw = false;
+
+        // --- Guide Line State (New) ---
+        let referenceBgRect = null;
+        let activeGuideLines = {
+            corners: [false, false, false, false], // top-left, top-right, bottom-right, bottom-left
+            edges: [false, false, false, false]    // top, right, bottom, left
+        };
+        let snapPoint = null;
+        const guideLineColor = '#FF00F0';
+        const guideProximity = 15; // Proximity in screen pixels to activate guides
+
+
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            if (!notification) return;
+
+            notification.textContent = message;
+            notification.classList.toggle('error', isError);
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        sidebarToggleBtn.addEventListener('click', () => {
+            const isOpen = configSidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('open', isOpen);
+            sidebarToggleBtn.classList.toggle('open', isOpen);
+            document.body.classList.toggle('sidebar-open', isOpen);
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            configSidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('open');
+            sidebarToggleBtn.classList.remove('open');
+            document.body.classList.remove('sidebar-open');
+        });
+        
+        function setupSliderListeners() {
+            const sliders = document.querySelectorAll('input[type="range"]');
+            
+            sliders.forEach(slider => {
+                const valueDisplay = document.getElementById(`${slider.id}Value`);
+                const controlStack = slider.closest('.control-stack');
+
+                const updateTrackBackground = () => {
+                    if (!valueDisplay) return;
+                    const min = parseFloat(slider.min);
+                    const max = parseFloat(slider.max);
+                    const val = parseFloat(slider.value);
+                    const percentage = ((val - min) * 100) / (max - min);
+                    const fillColor = '#1284FF';
+                    const trackColor = '#444c56';
+                    slider.style.background = `linear-gradient(to right, ${fillColor} ${percentage}%, ${trackColor} ${percentage}%)`;
+                };
+
+                updateTrackBackground();
+
+                slider.addEventListener('input', () => {
+                    if (valueDisplay) valueDisplay.textContent = slider.value;
+                    updateTrackBackground();
+
+                    switch(slider.id) {
+                        case 'repulsionStrength': repulsionStrength = parseFloat(slider.value); break;
+                        case 'linkIncreaseRate': 
+                            linkIncreaseRate = parseFloat(slider.value) / 100;
+                            nodes.forEach(node => {
+                                if (!node.imageUrl) {
+                                   node.radius = baseNodeRadius * (1 + node.connectionCount * linkIncreaseRate);
+                                }
+                            });
+                            break;
+                        case 'titleSize': titleSize = parseInt(slider.value); break;
+                        case 'bgRectTitleSize': bgRectTitleSize = parseInt(slider.value); break;
+                        case 'relationSize': relationSize = parseInt(slider.value); break;
+                        case 'lineWidth': lineWidth = parseFloat(slider.value); break;
+                        case 'maxLinkDistance': maxLinkDistance = parseInt(slider.value); repulsionRadius = maxLinkDistance * 3; break;
+                        case 'imageNodeSize':
+                            imageNodeSize = parseInt(slider.value);
+                             nodes.forEach(node => {
+                                if (node.imageUrl) {
+                                    node.radius = imageNodeSize;
+                                }
+                            });
+                            break;
+                        case 'arrowSize': arrowSize = parseInt(slider.value); break;
+                        case 'mouseAttraction': mouseAttractionStrength = parseFloat(slider.value); break;
+                    }
+                });
+
+                const startAdjust = () => {
+                    body.classList.add('adjusting-param');
+                    if (controlStack) controlStack.classList.add('is-adjusting');
+                };
+                const endAdjust = () => {
+                    body.classList.remove('adjusting-param');
+                    if (controlStack) controlStack.classList.remove('is-adjusting');
+                };
+
+                slider.addEventListener('mousedown', startAdjust);
+                slider.addEventListener('touchstart', startAdjust, { passive: true });
+                slider.addEventListener('mouseup', endAdjust);
+                slider.addEventListener('touchend', endAdjust);
+            });
+        }
+        setupSliderListeners();
+        
+        if (mouseAttractionValueEl && mouseAttractionEl) {
+            mouseAttractionValueEl.textContent = mouseAttractionEl.value;
+        }
+
+        function updatePulseButtonUI() {
+            if (isPulseAnimationEnabled) {
+                togglePulseBtn.textContent = 'Pulse Animation: On';
+                togglePulseBtn.style.backgroundColor = '#2ecc71';
+            } else {
+                togglePulseBtn.textContent = 'Pulse Animation: Off';
+                togglePulseBtn.style.backgroundColor = '#d13030';
+            }
+        }
+
+        togglePulseBtn.addEventListener('click', () => {
+            isPulseAnimationEnabled = !isPulseAnimationEnabled;
+            updatePulseButtonUI();
+        });
+        
+        function updateImageClipButtonUI() {
+            if (isImageClippingEnabled) {
+                toggleImageClipBtn.textContent = 'Circular Clip: On';
+                toggleImageClipBtn.style.backgroundColor = '#2ecc71';
+            } else {
+                toggleImageClipBtn.textContent = 'Circular Clip: Off';
+                toggleImageClipBtn.style.backgroundColor = '#d13030';
+            }
+        }
+
+        toggleImageClipBtn.addEventListener('click', () => {
+            isImageClippingEnabled = !isImageClippingEnabled;
+            updateImageClipButtonUI();
+        });
+
+        function updateRelationsButtonUI() {
+            if (showAllRelations) {
+                toggleRelationsBtn.textContent = 'Relations: On';
+                toggleRelationsBtn.style.backgroundColor = '#2ecc71';
+            } else {
+                toggleRelationsBtn.textContent = 'Relations: Off';
+                toggleRelationsBtn.style.backgroundColor = '#d13030';
+            }
+        }
+
+        toggleRelationsBtn.addEventListener('click', () => {
+            showAllRelations = !showAllRelations;
+            updateRelationsButtonUI();
+        });
+
+        function updateArrowButtonUI() {
+            if (isArrowVisible) {
+                toggleArrowBtn.textContent = 'Show Arrows: On';
+                toggleArrowBtn.style.backgroundColor = '#2ecc71';
+            } else {
+                toggleArrowBtn.textContent = 'Show Arrows: Off';
+                toggleArrowBtn.style.backgroundColor = '#d13030';
+            }
+        }
+
+        toggleArrowBtn.addEventListener('click', () => {
+            isArrowVisible = !isArrowVisible;
+            updateArrowButtonUI();
+        });
+
+        function updateSaveTitleButtonUI() {
+            const currentTitle = graphTitleInput.value.trim();
+            if (currentTitle && currentTitle === savedGraphTitle) {
+                saveTitleBtn.textContent = 'Cancel';
+                saveTitleBtn.classList.add('cancel');
+                saveTitleBtn.classList.remove('save');
+            } else {
+                saveTitleBtn.textContent = 'Save';
+                saveTitleBtn.classList.add('save');
+                saveTitleBtn.classList.remove('cancel');
+            }
+        }
+
+        graphTitleInput.addEventListener('input', updateSaveTitleButtonUI);
+
+        saveTitleBtn.addEventListener('click', () => {
+            if (saveTitleBtn.classList.contains('cancel')) {
+                graphTitle = '';
+                savedGraphTitle = '';
+                graphTitleInput.value = '';
+                } else {
+                const title = graphTitleInput.value.trim();
+                if (!title) {
+                    return;
+                }
+                graphTitle = title;
+                savedGraphTitle = title;
+                }
+            updateSaveTitleButtonUI();
+        });
+
+        lineColorInput.addEventListener('input', () => {
+            lineColor = lineColorInput.value;
+        });
+
+        resetLineColorBtn.addEventListener('click', () => {
+            lineColor = defaultLineColor;
+            lineColorInput.value = defaultLineColor;
+        });
+
+        const tagColorCache = {};
+        function clearTagColorCache() {
+            for (const key in tagColorCache) {
+                delete tagColorCache[key];
+            }
+        }
+
+        function updateTagListUI() {
+            tagListContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const tagItem = document.createElement('div');
+                tagItem.className = 'tag-item';
+
+                const tagDetails = document.createElement('div');
+                tagDetails.style.display = 'flex';
+                tagDetails.style.alignItems = 'center';
+                tagDetails.style.gap = '8px';
+
+                const colorSwatch = document.createElement('div');
+                colorSwatch.className = 'tag-color-swatch';
+                colorSwatch.style.backgroundColor = tag.color;
+
+                const tagNameEl = document.createElement('span');
+                tagNameEl.textContent = tag.name;
+
+                tagDetails.appendChild(colorSwatch);
+                tagDetails.appendChild(tagNameEl);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'tag-delete-btn';
+                deleteBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`; 
+                
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const tagNameToDelete = tag.name;
+                    const tagIndex = tags.findIndex(t => t.name === tagNameToDelete);
+                    if (tagIndex > -1) {
+                        tags.splice(tagIndex, 1);
+                        
+                        nodes.forEach(node => {
+                            if (node.tag === tagNameToDelete) {
+                                node.tag = null;
+                            }
+                        });
+                        backgroundRects.forEach(rect => {
+                            if (rect.tag === tagNameToDelete) {
+                                rect.tag = null;
+                            }
+                        });
+                        clearTagColorCache();
+                        updateTagListUI();
+                    }
+                });
+
+                tagItem.appendChild(tagDetails);
+                tagItem.appendChild(deleteBtn);
+                tagListContainer.appendChild(tagItem);
+            });
+        }
+
+        saveTagBtn.addEventListener('click', () => {
+            const name = tagNameInput.value.trim();
+            const color = tagColorInput.value;
+            if (name === '') return;
+            const existingTag = tags.find(t => t.name === name);
+            if (existingTag) {
+                existingTag.color = color;
+            } else {
+                tags.push({ name, color });
+            }
+            tagNameInput.value = '';
+            clearTagColorCache();
+            updateTagListUI();
+        });
+
+        function getTagColor(tagName) {
+            if (!tagName) return '#FFFFFF'; // Default for bg rects
+            if (tagColorCache[tagName]) return tagColorCache[tagName];
+            
+            const tag = tags.find(t => t.name === tagName);
+            const color = tag ? tag.color : '#FFFFFF';
+            tagColorCache[tagName] = color;
+            return color;
+        }
+
+        function editRelation(link, x, y) {
+            if (editingRelation) return;
+            editingRelation = link;
+
+            const cleanUp = () => {
+                if (!editingRelation) return;
+                editingRelation.isEditing = false;
+                editingRelation = null;
+                const container = document.querySelector('.relation-edit-container');
+                if (container) container.remove();
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+
+            const handleClickOutside = (e) => {
+                if (e.target.closest('.relation-edit-container')) return;
+                cleanUp();
+            };
+            
+            const container = document.createElement('div');
+            container.className = 'relation-edit-container';
+            
+            container.addEventListener('mousedown', (e) => e.stopPropagation());
+            container.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+
+            const placeholder1 = `${link.source.name} → ${link.target.name}`;
+            const relation1Input = document.createElement('input');
+            relation1Input.type = 'text';
+            relation1Input.placeholder = placeholder1;
+            relation1Input.title = placeholder1;
+            relation1Input.value = link.relation[link.source.id] || '';
+            container.appendChild(relation1Input);
+
+            const placeholder2 = `${link.target.name} → ${link.source.name}`;
+            const relation2Input = document.createElement('input');
+            relation2Input.type = 'text';
+            relation2Input.placeholder = placeholder2;
+            relation2Input.title = placeholder2;
+            relation2Input.value = link.relation[link.target.id] || '';
+            container.appendChild(relation2Input);
+
+            const confirmBtn = document.createElement('button');
+            confirmBtn.innerHTML = svgConfirmCheck;
+            container.appendChild(confirmBtn);
+
+            confirmBtn.addEventListener('mousedown', (e) => { 
+                e.preventDefault();
+                link.relation[link.source.id] = relation1Input.value.trim() || null;
+                link.relation[link.target.id] = relation2Input.value.trim() || null;
+                cleanUp();
+            });
+
+            container.style.left = `${x}px`;
+            container.style.top = `${y}px`;
+            document.body.appendChild(container);
+
+            setTimeout(() => {
+                document.addEventListener('mousedown', handleClickOutside);
+            }, 0);
+        }
+
+        function editNode(node, clientX, clientY) {
+            if (editingInput) return;
+            editingNode = node;
+            
+            const wasOriginallyFixed = node.isFixed;
+            editingNode.isFixed = true;
+
+            const cleanUp = (deleteNode = false) => {
+                if (!editingInput) return;
+                if (deleteNode || (node.isNew && input.value.trim() === '')) {
+                     for (let i = links.length - 1; i >= 0; i--) {
+                        if (links[i].source === node || links[i].target === node) {
+                            links.splice(i, 1);
+                        }
+                    }
+                    const nodeIndex = nodes.indexOf(node);
+                    if (nodeIndex > -1) nodes.splice(nodeIndex, 1);
+                } else {
+                    node.name = input.value.trim() || `Node ${node.id + 1}`;
+                    node.tag = tagSelector.value === "" ? null : tagSelector.value;
+                    node.hyperlink = hyperlinkInput.value.trim() || null;
+                    const newImageUrl = imageInput.value.trim();
+                    if (newImageUrl && newImageUrl !== node.imageUrl) {
+                        node.imageUrl = newImageUrl;
+                        node.image = new Image();
+                        node.image.onload = () => {
+                            node.radius = imageNodeSize;
+                            node.originalWidth = node.image.naturalWidth;
+                            node.originalHeight = node.image.naturalHeight;
+                            hoverOriginalRadius = imageNodeSize;
+                        };
+                        node.image.onerror = () => {
+                            console.error(`Failed to load image: ${newImageUrl}`);
+                            node.imageUrl = null;
+                            node.image = null;
+                            node.radius = baseNodeRadius * (1 + node.connectionCount * linkIncreaseRate);
+                        };
+                        node.image.src = newImageUrl;
+                    } else if (!newImageUrl && node.imageUrl) {
+                        node.imageUrl = null;
+                        node.image = null;
+                        node.originalWidth = undefined;
+                        node.originalHeight = undefined;
+                        const newRadius = baseNodeRadius * (1 + node.connectionCount * linkIncreaseRate);
+                        node.radius = newRadius;
+                        if (node === hoverNode) {
+                           hoverOriginalRadius = newRadius;
+                        }
+                    }
+                    node.isNew = false;
+                }
+                editingInput.remove();
+                editingInput = null;
+                editingNode = null;
+
+                node.isFixed = wasOriginallyFixed;
+                if (!wasOriginallyFixed) {
+                    node.vx = 0;
+                    node.vy = 0;
+                }
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+
+            const handleClickOutside = (e) => {
+                if (editingInput && !editingInput.contains(e.target)) {
+                    // If it's a new node, an outside click should be treated as a cancellation.
+                    if (node.isNew) {
+                        cleanUp(true); // Treat as cancel
+                    } else {
+                        cleanUp(false); // Treat as save for existing nodes
+                    }
+                }
+            };
+            
+            const container = document.createElement('div');
+            container.className = 'edit-container';
+            
+            container.addEventListener('mousedown', (e) => e.stopPropagation());
+            container.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'edit-input';
+            input.placeholder = "Node Name";
+            input.value = node.name;
+            container.appendChild(input);
+
+            const imageInput = document.createElement('input');
+            imageInput.type = 'url';
+            imageInput.className = 'image-url-input';
+            imageInput.placeholder = "Image URL (optional)";
+            imageInput.value = node.imageUrl || '';
+            container.appendChild(imageInput);
+
+            const hyperlinkInput = document.createElement('input');
+            hyperlinkInput.type = 'url';
+            hyperlinkInput.className = 'image-url-input';
+            hyperlinkInput.placeholder = "Hyperlink (optional)";
+            hyperlinkInput.value = node.hyperlink || '';
+            container.appendChild(hyperlinkInput);
+
+            const controlsContainer = document.createElement('div');
+            controlsContainer.className = 'tag-controls';
+            
+            const tagSelector = document.createElement('select');
+            tagSelector.className = 'tag-selector';
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "No Tag";
+            tagSelector.appendChild(defaultOption);
+            tags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag.name;
+                option.textContent = tag.name;
+                if (node.tag === tag.name) option.selected = true;
+                tagSelector.appendChild(option);
+            });
+            controlsContainer.appendChild(tagSelector);
+
+            if (node.isNew) {
+                const confirmBtn = document.createElement('button');
+                confirmBtn.id = 'confirmBtn';
+                confirmBtn.innerHTML = svgConfirmSave;
+                controlsContainer.appendChild(confirmBtn);
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.id = 'cancelBtn';
+                cancelBtn.innerHTML = svgCancel;
+                controlsContainer.appendChild(cancelBtn);
+
+                confirmBtn.addEventListener('mousedown', (e) => { e.preventDefault(); cleanUp(false); });
+                cancelBtn.addEventListener('mousedown', (e) => { e.preventDefault(); cleanUp(true); });
+                input.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+                imageInput.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+                hyperlinkInput.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+            } else {
+                const editBtn = document.createElement('button');
+                editBtn.id = 'editNodeBtn';
+                editBtn.innerHTML = svgConfirmCheck;
+                controlsContainer.appendChild(editBtn);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.id = 'deleteNodeBtn';
+                deleteBtn.innerHTML = svgDelete;
+                controlsContainer.appendChild(deleteBtn);
+
+                editBtn.addEventListener('mousedown', (e) => { e.preventDefault(); cleanUp(false); });
+                deleteBtn.addEventListener('mousedown', (e) => { e.preventDefault(); cleanUp(true); });
+                input.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+                imageInput.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+                hyperlinkInput.addEventListener('keydown', (keyEvent) => { if (keyEvent.key === 'Enter') cleanUp(false); });
+            }
+            
+            container.appendChild(controlsContainer);
+
+            const finalX = clientX !== undefined ? clientX : (node.x * scale + panX);
+            const finalY = clientY !== undefined ? clientY : (node.y * scale + panY);
+            container.style.left = `${finalX}px`;
+            container.style.top = `${finalY}px`;
+
+            document.body.appendChild(container);
+            input.focus();
+            input.select();
+            editingInput = container;
+
+            setTimeout(() => {
+                document.addEventListener('mousedown', handleClickOutside);
+            }, 0);
+        }
+
+        function drawArrow(ctx, fromNode, toNode, size, color) {
+            const headLength = size;
+            const headWidth = size / 3;
+
+            const dx = toNode.x - fromNode.x;
+            const dy = toNode.y - fromNode.y;
+            const angle = Math.atan2(dy, dx);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < toNode.radius) return;
+            
+            const toX = toNode.x - (toNode.radius * Math.cos(angle));
+            const toY = toNode.y - (toNode.radius * Math.sin(angle));
+
+            ctx.save();
+            ctx.fillStyle = color;
+
+            ctx.translate(toX, toY);
+            ctx.rotate(angle);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-headLength / scale, -headWidth / scale);
+            ctx.lineTo(-headLength / scale, headWidth / scale);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.restore();
+        }
+        
+        /**
+         * MODIFIED: Renders relation text with arrow on the correct side based on character.
+         */
+        function drawRelationText(ctx, link, opacity) {
+            const sourceRelation = link.relation[link.source.id];
+            const targetRelation = link.relation[link.target.id];
+        
+            if (!sourceRelation && !targetRelation) {
+                return;
+            }
+        
+            const midX = (link.source.x + link.target.x) / 2;
+            const midY = (link.source.y + link.target.y) / 2;
+            let angle = Math.atan2(link.target.y - link.source.y, link.target.x - link.source.x);
+            
+            let isFlipped = false;
+            if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+                angle += Math.PI;
+                isFlipped = true;
+            }
+        
+            ctx.save();
+            ctx.translate(midX, midY);
+            ctx.rotate(angle);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const resolutionFactor = isScreenshotMode ? 2.5 : 1;
+            ctx.font = `bold ${relationSize / scale }px Arial`;
+            
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 5 / scale;
+
+            const isBidirectional = sourceRelation && targetRelation;
+            const offset = isBidirectional ? (6 / scale) : 0;
+        
+            if (sourceRelation) {
+                const arrow = isFlipped ? '◀\uFE0E' : '▶\uFE0E';
+                const text = arrow.includes('▶') ? `${sourceRelation} ${arrow}` : `${arrow} ${sourceRelation}`;
+                const sourceColor = getTagColor(link.source.tag) || '#c9d1d9';
+                ctx.fillStyle = hexToRgba(sourceColor, opacity);
+                ctx.fillText(text, 0, -offset);
+            }
+        
+            if (targetRelation) {
+                const arrow = isFlipped ? '▶\uFE0E' : '◀\uFE0E';
+                const text = arrow.includes('▶') ? `${targetRelation} ${arrow}` : `${arrow} ${targetRelation}`;
+                const targetColor = getTagColor(link.target.tag) || '#c9d1d9';
+                ctx.fillStyle = hexToRgba(targetColor, opacity);
+                ctx.fillText(text, 0, offset);
+            }
+        
+            ctx.restore();
+        }
+
+        /**
+         * [FIX] Modified function to use hexToRgba and respect rect opacity.
+         */
+        function drawBackgroundLayer() {
+            const rectsToDraw = [...backgroundRects];
+            if (currentBgRect) {
+                rectsToDraw.push(currentBgRect);
+            }
+        
+            rectsToDraw.forEach(rect => {
+                const rectOpacity = (rect.opacity !== undefined) ? rect.opacity : 1.0;
+                const color = getTagColor(rect.tag);
+        
+                ctx.save();
+                
+                // Draw fill
+                ctx.fillStyle = hexToRgba(color, rectOpacity * 0.15);
+                ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+        
+                // Draw border
+                ctx.strokeStyle = hexToRgba(color, rectOpacity);
+                ctx.lineWidth = 2 / scale;
+                ctx.setLineDash([8 / scale, 6 / scale]);
+                ctx.shadowColor = hexToRgba(color, rectOpacity);
+                ctx.shadowBlur = 15 / scale;
+                ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+                
+                ctx.restore();
+        
+                // Draw title/tag
+                if (rect.tag) {
+                    ctx.save();
+                    const resolutionFactor = isScreenshotMode ? 2.5 : 1;
+                    ctx.font = `bold ${bgRectTitleSize / scale }px Arial`;
+                    ctx.fillStyle = hexToRgba(getTagColor(rect.tag), rectOpacity);
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+                    ctx.shadowBlur = 5 / scale;
+                    ctx.fillText(rect.tag, rect.x + (5 / scale), rect.y + (5 / scale));
+                    ctx.restore();
+                }
+            });
+        }
+        
+        // --- New Guide Line Drawing Function ---
+        function drawGuideLines() {
+            if (!referenceBgRect || currentMode !== 'background') return;
+
+            ctx.save();
+            ctx.strokeStyle = guideLineColor;
+            ctx.fillStyle = guideLineColor;
+
+            const r = referenceBgRect;
+            const crosshairSize = 10 / scale;
+            const corners = [
+                { x: r.x, y: r.y }, { x: r.x + r.w, y: r.y },
+                { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }
+            ];
+
+            // Draw active corner crosshairs (solid)
+            activeGuideLines.corners.forEach((isActive, i) => {
+                if (isActive) {
+                    const corner = corners[i];
+                    ctx.lineWidth = 1.5 / scale;
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(corner.x - crosshairSize, corner.y);
+                    ctx.lineTo(corner.x + crosshairSize, corner.y);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(corner.x, corner.y - crosshairSize);
+                    ctx.lineTo(corner.x, corner.y + crosshairSize);
+                    ctx.stroke();
+                }
+            });
+
+            // Draw active edge extension lines (dashed)
+            const view = {
+                x1: (-panX / scale) - 100,
+                y1: (-panY / scale) - 100,
+                x2: ((-panX + width) / scale) + 100,
+                y2: ((-panY + height) / scale) + 100
+            };
+
+            activeGuideLines.edges.forEach((isActive, i) => {
+                if (isActive) {
+                    ctx.lineWidth = 1 / scale;
+                    ctx.setLineDash([5 / scale, 5 / scale]);
+                    ctx.beginPath();
+                    if (i === 0) { // top
+                        ctx.moveTo(view.x1, r.y);
+                        ctx.lineTo(view.x2, r.y);
+                    } else if (i === 1) { // right
+                        ctx.moveTo(r.x + r.w, view.y1);
+                        ctx.lineTo(r.x + r.w, view.y2);
+                    } else if (i === 2) { // bottom
+                        ctx.moveTo(view.x1, r.y + r.h);
+                        ctx.lineTo(view.x2, r.y + r.h);
+                    } else { // left
+                        ctx.moveTo(r.x, view.y1);
+                        ctx.lineTo(r.x, view.y2);
+                    }
+                    ctx.stroke();
+                }
+            });
+            
+            // Draw snap point indicator
+            if (snapPoint) {
+                ctx.setLineDash([]);
+                ctx.lineWidth = 1.5 / scale;
+                ctx.beginPath();
+                ctx.arc(snapPoint.x, snapPoint.y, 4 / scale, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const now = performance.now();
+
+            ctx.save();
+            ctx.translate(panX, panY);
+            ctx.scale(scale, scale);
+
+            // DRAW BACKGROUND RECTS AND TITLES FIRST
+            drawBackgroundLayer();
+
+            // 1. Draw base lines
+            links.forEach(link => {
+                ctx.save();
+                ctx.globalAlpha = link.opacity;
+                ctx.strokeStyle = lineColor; // Use variable for line color
+                ctx.lineWidth = lineWidth / scale;
+                ctx.beginPath();
+                ctx.moveTo(link.source.x, link.source.y);
+                ctx.lineTo(link.target.x, link.target.y);
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            // 2. Draw hover glows and pulses
+            links.forEach(link => {
+                const baseAlpha = link.opacity;
+                if (link.linkGlowAlpha > 0) {
+                    const glowColor = getTagColor(link.source.tag || link.target.tag) || '#c9d1d9';
+                    ctx.save();
+                    ctx.globalAlpha = link.linkGlowAlpha * baseAlpha;
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = glowColor;
+                    ctx.lineWidth = lineWidth / scale;
+                    const startNode = link.source === hoverNode ? link.source : link.target;
+                    const endNode = link.source === hoverNode ? link.target : link.source;
+                    const gradient = ctx.createLinearGradient(startNode.x, startNode.y, endNode.x, endNode.y);
+                    gradient.addColorStop(0, glowColor);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    ctx.strokeStyle = gradient;
+                    ctx.beginPath();
+                    ctx.moveTo(link.source.x, link.source.y);
+                    ctx.lineTo(link.target.x, link.target.y);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+                
+                if (isPulseAnimationEnabled && link.pulse) {
+                    const progress = (now - link.pulse.startTime) / link.pulse.duration;
+                    if (progress < 0 || progress > 1) return;
+
+                    const startNode = link.pulse.startNode;
+                    const endNode = link.pulse.endNode;
+                    const pulseColor = getTagColor(startNode.tag) || '#c9d1d9';
+                    const dx = endNode.x - startNode.x;
+                    const dy = endNode.y - startNode.y;
+                    const headX = startNode.x + dx * progress;
+                    const headY = startNode.y + dy * progress;
+                    const tailLength = 0.2;
+                    const tailProgress = Math.max(0, progress - tailLength);
+                    const tailX = startNode.x + dx * tailProgress;
+                    const tailY = startNode.y + dy * tailProgress;
+                    const opacity = 1 - progress; 
+
+                    ctx.save();
+                    ctx.globalAlpha = opacity * baseAlpha;
+                    ctx.lineWidth = 3 / scale;
+                    ctx.lineCap = 'round';
+                    const colorRGB = `${parseInt(pulseColor.slice(1,3), 16)}, ${parseInt(pulseColor.slice(3,5), 16)}, ${parseInt(pulseColor.slice(5,7), 16)}`;
+                    const gradient = ctx.createLinearGradient(tailX, tailY, headX, headY);
+                    gradient.addColorStop(0, `rgba(${colorRGB}, 0)`);
+                    gradient.addColorStop(1, pulseColor);
+                    ctx.strokeStyle = gradient;
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = pulseColor;
+                    ctx.beginPath();
+                    ctx.moveTo(tailX, tailY);
+                    ctx.lineTo(headX, headY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(headX, headY, 1.5 / scale, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 30;
+                    ctx.shadowColor = pulseColor;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+
+            // 3. Draw special mode lines (draw, cut, highlighted)
+            if (currentMode === 'draw' && drawSourceNode) {
+                ctx.save();
+                ctx.lineWidth = 4 / scale;
+                ctx.lineCap = 'round';
+                ctx.shadowBlur = 10;
+                const drawColor = getTagColor(drawSourceNode.tag) || '#c9d1d9';
+                ctx.shadowColor = `rgba(${parseInt(drawColor.slice(1,3), 16)}, ${parseInt(drawColor.slice(3,5), 16)}, ${parseInt(drawColor.slice(5,7), 16)}, ${drawLineGlowAlpha})`;
+                const startX = drawSourceNode.x;
+                const startY = drawSourceNode.y;
+                let endX, endY;
+                
+                const canvasMouseX = (mouse.x - panX) / scale;
+                const canvasMouseY = (mouse.y - panY) / scale;
+                const targetNode = findNodeAt(canvasMouseX, canvasMouseY);
+
+                if (targetNode && targetNode !== drawSourceNode) {
+                    endX = targetNode.x;
+                    endY = targetNode.y;
+                } else {
+                    endX = canvasMouseX;
+                    endY = canvasMouseY;
+                }
+
+                ctx.strokeStyle = `rgba(180, 180, 180, 1)`;
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            if (currentMode === 'draw' && isCutting && cutLineStart) {
+                const currentMouseX = (mouse.x - panX) / scale;
+                const currentMouseY = (mouse.y - panY) / scale;
+                ctx.save();
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 5 / scale;
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#ff0000';
+                ctx.strokeStyle = '#ff0000';
+                ctx.beginPath();
+                ctx.moveTo(cutLineStart.x, cutLineStart.y);
+                ctx.lineTo(currentMouseX, currentMouseY);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            links.forEach(link => {
+                if (link.isHighlighted && currentMode === 'draw') {
+                    const sourceRelation = link.relation[link.source.id];
+                    const targetRelation = link.relation[link.target.id];
+                    const hasText = sourceRelation || targetRelation;
+
+                    ctx.save();
+                    ctx.lineWidth = 3 / scale;
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#ffdd00';
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#ffdd00';
+                    
+                    if (!hasText) {
+                        ctx.beginPath();
+                        ctx.moveTo(link.source.x, link.source.y);
+                        ctx.lineTo(link.target.x, link.target.y);
+                        ctx.stroke();
+                    } else {
+                        const dx = link.target.x - link.source.x;
+                        const dy = link.target.y - link.source.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        const resolutionFactor = isScreenshotMode ? 2.5 : 1;
+                        ctx.font = `bold ${relationSize / scale }px Arial`;
+
+                        const textPadding = 12 / scale;
+                        let maxWidth = 0;
+                        if (sourceRelation) maxWidth = Math.max(maxWidth, ctx.measureText(`${sourceRelation} ▶︎`).width);
+                        if (targetRelation) maxWidth = Math.max(maxWidth, ctx.measureText(`${targetRelation} ▶︎`).width);
+                        
+                        const gapLength = maxWidth + textPadding;
+                        
+                        if (gapLength < dist - (link.source.radius + link.target.radius)) {
+                            const halfGap = gapLength / 2;
+                            const normDx = dx / dist;
+                            const normDy = dy / dist;
+
+                            const lineStart = {
+                                x: link.source.x + normDx * link.source.radius,
+                                y: link.source.y + normDy * link.source.radius
+                            };
+                             const lineEnd = {
+                                x: link.target.x - normDx * link.target.radius,
+                                y: link.target.y - normDy * link.target.radius
+                            };
+                            const effectiveDist = dist - (link.source.radius + link.target.radius);
+
+                            const gapStartDist = effectiveDist / 2 - halfGap;
+                            const gapEndDist = effectiveDist / 2 + halfGap;
+
+                            const segment1EndX = lineStart.x + normDx * gapStartDist;
+                            const segment1EndY = lineStart.y + normDy * gapStartDist;
+                            const segment2StartX = lineStart.x + normDx * gapEndDist;
+                            const segment2StartY = lineStart.y + normDy * gapEndDist;
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(lineStart.x, lineStart.y);
+                            ctx.lineTo(segment1EndX, segment1EndY);
+                            ctx.stroke();
+
+                            ctx.beginPath();
+                            ctx.moveTo(segment2StartX, segment2StartY);
+                            ctx.lineTo(lineEnd.x, lineEnd.y);
+                            ctx.stroke();
+                        } else {
+                             ctx.beginPath();
+                             ctx.moveTo(link.source.x, link.source.y);
+                             ctx.lineTo(link.target.x, link.target.y);
+                             ctx.stroke();
+                        }
+                    }
+                    ctx.restore();
+                }
+            });
+
+            // 4. Draw arrows
+            if (isArrowVisible) {
+                links.forEach(link => {
+                    if (!link.relation[link.source.id] && !link.relation[link.target.id]) return;
+
+                    ctx.save();
+                    ctx.globalAlpha = link.opacity;
+                    if (link.relation[link.source.id]) {
+                        const arrowColor = getTagColor(link.source.tag) || '#c9d1d9';
+                        drawArrow(ctx, link.source, link.target, arrowSize, arrowColor);
+                    }
+                    if (link.relation[link.target.id]) {
+                        const arrowColor = getTagColor(link.target.tag) || '#c9d1d9';
+                        drawArrow(ctx, link.target, link.source, arrowSize, arrowColor);
+                    }
+                    ctx.restore();
+                });
+            }
+
+            // 5. Draw relation texts
+            links.forEach(link => {
+                const isHoveredOnNode = (hoverNode && (link.source === hoverNode || link.target === hoverNode));
+                const isHighlightedInDraw = currentMode === 'draw' && link.isHighlighted;
+                const isHoveredOnLink = (hoverLink === link);
+            
+                const shouldDraw = showAllRelations || (isHoveredOnNode && (currentMode === 'default' || isPreviewMode)) || isHighlightedInDraw || isHoveredOnLink;
+            
+                if (shouldDraw) {
+                    // [FIX] Pass opacity to the drawing function instead of using globalAlpha
+                    drawRelationText(ctx, link, link.opacity);
+                }
+            });
+
+            // 6. Draw node shapes
+            nodes.forEach(node => {
+                const baseAlpha = node.opacity;
+                ctx.save();
+               
+                const drawX = node.x;
+                const drawY = node.y;
+            
+                if (node.isSearchResult || node.isRectSelected) {
+                    ctx.save();
+                    ctx.globalAlpha = searchGlow.alpha * baseAlpha;
+                    ctx.lineWidth = 3 / scale;
+                    ctx.strokeStyle = '#ffdd00';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#ffdd00';
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, node.radius + 5 / scale, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                ctx.globalAlpha = baseAlpha;
+            
+                if (node.image && node.image.complete) {
+                    const maxDim = node.radius * 2;
+                    const originalWidth = node.originalWidth || node.image.naturalWidth;
+                    const originalHeight = node.originalHeight || node.image.naturalHeight;
+            
+                    let newWidth, newHeight;
+                    if (originalWidth > originalHeight) {
+                        newWidth = maxDim;
+                        newHeight = (maxDim / originalWidth) * originalHeight;
+                    } else {
+                        newHeight = maxDim;
+                        newWidth = (maxDim / originalHeight) * originalWidth;
+                    }
+            
+                    if (isImageClippingEnabled) {
+                        const clipRadius = node.radius;
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(drawX, drawY, clipRadius, 0, Math.PI * 2, true);
+                        ctx.clip();
+                        ctx.drawImage(node.image, drawX - newWidth / 2, drawY - newHeight / 2, newWidth, newHeight);
+                        ctx.restore();
+            
+                        ctx.beginPath();
+                        ctx.arc(drawX, drawY, clipRadius, 0, Math.PI * 2, true);
+                        ctx.strokeStyle = getTagColor(node.tag) || '#c9d1d9';
+                        ctx.lineWidth = 2 / scale;
+                        ctx.stroke();
+                    } else {
+                        ctx.drawImage(node.image, drawX - newWidth / 2, drawY - newHeight / 2, newWidth, newHeight);
+                    }
+                } else {
+                    let nodeColor = getTagColor(node.tag) || '#c9d1d9';
+                    if (node.glowAlpha > 0) {
+                        ctx.save();
+                        ctx.globalAlpha = node.glowAlpha * baseAlpha;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = nodeColor;
+                        ctx.beginPath();
+                        ctx.arc(drawX, drawY, node.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = nodeColor;
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, node.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = nodeColor;
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            });
+            
+            // 7. Draw node titles
+            nodes.forEach(node => {
+                // [FIX] Removed globalAlpha and applied opacity directly to fillStyle using rgba
+                const drawX = node.x;
+                const drawY = node.y;
+
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+                ctx.shadowBlur = 2 / scale;
+                ctx.shadowOffsetX = 1 / scale;
+                ctx.shadowOffsetY = 1 / scale;
+
+                ctx.fillStyle = hexToRgba('#c9d1d9', node.opacity);
+                
+                const resolutionFactor = isScreenshotMode ? 2.5 : 1;
+                ctx.font = `bold ${titleSize / scale }px Arial`;
+
+                ctx.textAlign = 'center';
+                
+                ctx.textBaseline = 'bottom'; 
+            
+                const textMetrics = ctx.measureText(node.name);
+                const textY = drawY - node.radius - 8 / scale; 
+            
+                ctx.fillText(node.name, drawX, textY);
+            
+                if (node.hyperlink) {
+                    ctx.shadowColor = 'transparent'; 
+                    const textWidth = textMetrics.width;
+                    const iconSize = titleSize / scale / resolutionFactor;
+                    const iconX = drawX + textWidth / 2 + 2 / scale;
+                    ctx.save();
+                    ctx.translate(iconX, textY - iconSize); 
+                    ctx.scale(iconSize / 122.88, iconSize / 122.88);
+                    ctx.fillStyle = hexToRgba('#c9d1d9', node.opacity);
+                    ctx.fill(hyperlinkPath);
+                    ctx.restore();
+                }
+                ctx.restore();
+            });
+            
+            // 8. Draw guide lines for background mode (New)
+            drawGuideLines();
+
+            ctx.restore(); // Restore pan and scale transform
+            
+            if (selectionRect) {
+                ctx.save();
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); 
+                const rect = selectionRect;
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = 'rgba(255,0,0,0.9)';
+                ctx.shadowColor = 'rgba(255,0,0,0.9)';
+                ctx.shadowBlur = 8;
+                ctx.setLineDash([8,6]);
+                ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+                ctx.fillStyle = 'rgba(255,0,0,0.08)';
+                ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+                ctx.restore();
+            }
+        }
+        
+        function findHoveredLink(x, y) {
+            if (currentMode === 'draw') {
+                 for (const link of links) {
+                    if (!link.isHighlighted) continue;
+                    
+                    const p1 = link.source;
+                    const p2 = link.target;
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const lenSq = dx * dx + dy * dy;
+                    if (lenSq === 0) continue;
+                    const t = ((x - p1.x) * dx + (y - p1.y) * dy) / lenSq;
+                    const projectionT = Math.max(0, Math.min(1, t));
+                    const projectionX = p1.x + projectionT * dx;
+                    const projectionY = p1.y + projectionT * dy;
+                    const distSq = (x - projectionX) * (x - projectionX) + (y - projectionY) * (y - projectionY);
+
+                    if (distSq < (100 / (scale*scale))) {
+                        return link;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function update() {
+            const now = performance.now();
+            const canvasMouseX = (mouse.x - panX) / scale;
+            const canvasMouseY = (mouse.y - panY) / scale;
+
+            // --- VISUAL & ANIMATION UPDATES (run always) ---
+            searchGlow.alpha += searchGlow.direction * 0.03;
+            if (searchGlow.alpha > 1 || searchGlow.alpha < 0.2) {
+                searchGlow.direction *= -1;
+                searchGlow.alpha = Math.max(0.2, Math.min(1, searchGlow.alpha));
+            }
+
+            if (currentMode === 'draw' && (drawSourceNode || hoverNode)) {
+                drawLineGlowAlpha += glowDirection * 0.02;
+                if (drawLineGlowAlpha > 1 || drawLineGlowAlpha < 0) {
+                    glowDirection *= -1;
+                    drawLineGlowAlpha = Math.max(0, Math.min(1, drawLineGlowAlpha));
+                }
+            } else {
+                drawLineGlowAlpha = 0;
+            }
+
+            const pulseDuration = 300; 
+            links.forEach(link => {
+                const isLinkHovered = (link.source === hoverNode || link.target === hoverNode);
+                if (isLinkHovered && now - link.lastPulseTime > 1000) {
+                    if (isPulseAnimationEnabled) {
+                        link.pulse = {
+                            startTime: now,
+                            duration: pulseDuration,
+                            startNode: link.source === hoverNode ? link.source : link.target,
+                            endNode: link.source === hoverNode ? link.target : link.source
+                        };
+                    }
+                    if (hoverNode) hoverNode.glowAlpha = 1; 
+                    link.linkGlowAlpha = 1; 
+                    link.lastPulseTime = now;
+                }
+                if (link.pulse && now - link.pulse.startTime > link.pulse.duration) {
+                    link.pulse = null;
+                }
+            });
+
+            nodes.forEach(node => { if (node.glowAlpha > 0) { node.glowAlpha -= 0.05; } });
+            links.forEach(link => { if (link.linkGlowAlpha > 0) { link.linkGlowAlpha -= 0.05; } });
+
+            // --- OPACITY & FOCUS LOGIC (run always) ---
+            isFocusModeActive = false;
+            focusedElements.clear();
+        
+            if (currentMode === 'draw') {
+                let startingNode = null;
+                if (hoverNode && hoverNode.isAnchor) {
+                    startingNode = hoverNode;
+                } else if (hoverLink) {
+                    if (hoverLink.source.isAnchor) {
+                        startingNode = hoverLink.source;
+                    } else if (hoverLink.target.isAnchor) {
+                        startingNode = hoverLink.target;
+                    } else {
+                         isFocusModeActive = true;
+                         focusedElements.add(hoverLink);
+                         focusedElements.add(hoverLink.source);
+                         focusedElements.add(hoverLink.target);
+                    }
+                }
+        
+                if (startingNode) {
+                    isFocusModeActive = true;
+                    const nodesToExplore = [startingNode];
+                    const visitedNodes = new Set();
+                    
+                    while(nodesToExplore.length > 0) {
+                        const currentNode = nodesToExplore.pop();
+                        if (visitedNodes.has(currentNode.id)) continue;
+                        
+                        visitedNodes.add(currentNode.id);
+                        focusedElements.add(currentNode);
+                        
+                        links.forEach(link => {
+                            if (link.isHighlighted && (link.source === currentNode || link.target === currentNode)) {
+                                focusedElements.add(link);
+                                const otherNode = link.source === currentNode ? link.target : link.source;
+                                focusedElements.add(otherNode);
+                                
+                                if (otherNode.isAnchor) {
+                                    nodesToExplore.push(otherNode);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            const allElements = [...nodes, ...links, ...backgroundRects];
+            if (isFocusModeActive) {
+                allElements.forEach(el => {
+                    if (!el) return;
+                    el.targetOpacity = focusedElements.has(el) ? 1.0 : 0.2;
+                });
+            } else {
+                // MODIFIED: Do not make transparent in screenshot mode
+                const targetOpacity = (isGraphPaused && !isScreenshotMode) ? 0.2 : 1.0;
+                allElements.forEach(el => {
+                   if (!el) return;
+                    el.targetOpacity = targetOpacity;
+                });
+            }
+
+            allElements.forEach(el => {
+                if (!el) return;
+                if (el.opacity === undefined) el.opacity = 1;
+                if (el.targetOpacity === undefined) el.targetOpacity = 1;
+                if (Math.abs(el.targetOpacity - el.opacity) > 0.01) {
+                   el.opacity += (el.targetOpacity - el.opacity) * 0.1;
+                } else {
+                   el.opacity = el.targetOpacity;
+                }
+            });
+
+            // --- HOVER STATE (run always) ---
+            let newHoverNode = (isCutting || currentMode === 'background') ? null : findNodeAt(canvasMouseX, canvasMouseY);
+            hoverLink = isCutting ? null : findHoveredLink(canvasMouseX, canvasMouseY);
+
+            if (newHoverNode !== hoverNode) {
+                if (hoverNode) hoverNode.radius = hoverOriginalRadius;
+                if (newHoverNode) {
+                    hoverNode = newHoverNode;
+                    hoverOriginalRadius = newHoverNode.radius;
+                    newHoverNode.radius = hoverOriginalRadius * 1.5;
+                } else {
+                    hoverNode = null;
+                }
+            }
+            
+            // --- PAUSE CHECK ---
+            if (isGraphPaused) {
+                draw();
+                requestAnimationFrame(update);
+                return;
+            }
+
+            // --- PHYSICS (run only if not paused) ---
+            const repulsionRadiusSq = repulsionRadius * repulsionRadius;
+
+            for (let i = 0; i < nodes.length; i++) {
+                const nodeA = nodes[i];
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const nodeB = nodes[j];
+
+                    if (nodeA.isDragging && nodeB.isDragging) continue;
+
+                    const dx = nodeA.x - nodeB.x;
+                    const dy = nodeA.y - nodeB.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq > 0 && distSq < repulsionRadiusSq) {
+                        const distance = Math.sqrt(distSq);
+                        const physicalRadiusA = (nodeA === hoverNode) ? hoverOriginalRadius : nodeA.radius;
+                        const physicalRadiusB = (nodeB === hoverNode) ? hoverOriginalRadius : nodeB.radius;
+
+                        let forceMultiplier = 1;
+
+                        const now = performance.now();
+                        const tempA = (nodeA.tempRepulsionUntil && now < nodeA.tempRepulsionUntil);
+                        const tempB = (nodeB.tempRepulsionUntil && now < nodeB.tempRepulsionUntil);
+                        if (tempA || tempB) {
+                            forceMultiplier *= fixedNodeRepulsionMultiplier;
+                        }
+
+                        const forceScale = (repulsionRadius - distance) / repulsionRadius;
+                        const repulsionForce = repulsionStrength * (physicalRadiusA + physicalRadiusB) * forceMultiplier / distance * forceScale;
+
+                        const forceX = repulsionForce * dx / distance;
+                        const forceY = repulsionForce * dy / distance;
+
+                        if (!nodeA.isDragging) {
+                           nodeA.vx += forceX;
+                           nodeA.vy += forceY;
+                        }
+                        if (!nodeB.isDragging) {
+                           nodeB.vx -= forceX;
+                           nodeB.vy -= forceY;
+                        }
+                    }
+                }
+            }
+            
+            links.forEach(link => {
+                const dx = link.target.x - link.source.x;
+                const dy = link.target.y - link.source.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance > 0) {
+                    const force = linkStrength * (distance - maxLinkDistance);
+                    const forceX = force * dx / distance;
+                    const forceY = force * dy / distance;
+                    if (!link.source.isFixed) {
+                       link.source.vx += forceX;
+                       link.source.vy += forceY;
+                    }
+                    if (!link.target.isFixed) {
+                       link.target.vx -= forceX;
+                       link.target.vy -= forceY;
+                    }
+                }
+            });
+
+            nodes.forEach(node => {
+                if (node.isDragging) return;
+                
+                if (currentMode === 'default' && node === hoverNode && !isRectSelecting) {
+                    const dx = canvasMouseX - node.x;
+                    const dy = canvasMouseY - node.y;
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq > 100 / (scale * scale)) {
+                        const distance = Math.sqrt(distSq);
+                        const force = mouseAttractionStrength * distance;
+                        node.vx += force * dx / distance;
+                        node.vy += force * dy / distance;
+                    }
+                }
+
+                node.vx *= friction;
+                node.vy *= friction;
+                if (!node.isFixed) {
+                    node.x += node.vx;
+                    node.y += node.vy;
+                }
+            });
+            
+            // --- Final Draw ---
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        function setMode(newMode) {
+            if (currentMode === newMode) {
+                return;
+            }
+            currentMode = newMode;
+            isGraphPaused = (currentMode === 'background');
+            
+            [defaultModeBtn, drawModeBtn, backgroundModeBtn].forEach(btn => btn.classList.remove('active'));
+            
+            if (currentMode === 'default') {
+                defaultModeBtn.classList.add('active');
+                canvas.style.cursor = 'grab';
+                nodes.forEach(node => {
+                    if (node.isAnchor) {
+                        node.isAnchor = false;
+                        node.isFixed = false;
+                        node.vx = 0;
+                        node.vy = 0;
+                        node.fixType = null;
+                        node.isHighlighted = false;
+                    }
+                });
+                links.forEach(link => {
+                    link.isHighlighted = false;
+                });
+            } else if (currentMode === 'draw') {
+                drawModeBtn.classList.add('active');
+                canvas.style.cursor = 'crosshair';
+            } else if (currentMode === 'background') {
+                backgroundModeBtn.classList.add('active');
+                canvas.style.cursor = 'default';
+            }
+            
+            drawSourceNode = null;
+            cutLineStart = null;
+            isCutting = false;
+        }
+
+        function createNewNode(x, y, clientX, clientY) {
+            const newNode = {
+                id: nextNodeId++,
+                name: '',
+                x: x, y: y,
+                vx: 0, vy: 0,
+                connectionCount: 0,
+                radius: baseNodeRadius,
+                isDragging: false,
+                glowAlpha: 0,
+                isNew: true,
+                isFixed: false, 
+                isAnchor: false,
+                isHighlighted: false,
+                fixType: null,
+                wobbleOffset: { x: 0, y: 0 },
+                tag: null,
+                imageUrl: null,
+                image: null,
+                isSearchResult: false,
+                isRectSelected: false,
+                hyperlink: null,
+                opacity: 1,
+                targetOpacity: 1
+            };
+            nodes.push(newNode);
+            editNode(newNode, clientX, clientY);
+        }
+        
+        defaultModeBtn.addEventListener('click', () => setMode('default'));
+        drawModeBtn.addEventListener('click', () => setMode('draw'));
+        backgroundModeBtn.addEventListener('click', () => setMode('background'));
+        
+        canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+        let shiftKeyPressed = false;
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                return;
+            }
+            if (e.key === 'Shift') {
+                shiftKeyPressed = true;
+            }
+        
+            const key = e.key.toLowerCase();
+        
+            switch (key) {
+                case 'a':
+                    e.preventDefault();
+                    setMode('default');
+                    break;
+                case 'w':
+                    e.preventDefault();
+                    setMode('draw');
+                    break;
+                case 'd':
+                    e.preventDefault();
+                    setMode('background');
+                    break;
+                case 'q':
+                    e.preventDefault();
+                    searchInput.focus();
+                    break;
+                case 'e':
+                    e.preventDefault();
+                    sidebarToggleBtn.click();
+                    break;
+            }
+        
+            if (e.key === 'Escape' && isRectSelecting) {
+                finishRectSelection(false);
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Shift') {
+                shiftKeyPressed = false;
+            }
+        });
+
+        function findNodeAt(graphX, graphY) {
+            for (let i = nodes.length - 1; i >= 0; i--) {
+                const node = nodes[i];
+                const dx = node.x - graphX;
+                const dy = node.y - graphY;
+                const distSq = dx * dx + dy * dy;
+                if (distSq < Math.pow(node.radius * 1.5, 2)) {
+                    return node;
+                }
+            }
+            return null;
+        }
+
+        function findLinkAt(x, y, linkSet) {
+            let closestLink = null;
+            let minDistanceSq = 100 / (scale * scale);
+
+            for (const link of linkSet) {
+                const p1 = link.source;
+                const p2 = link.target;
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
+                const lenSq = dx * dx + dy * dy;
+
+                if (lenSq === 0) continue;
+
+                const t = ((x - p1.x) * dx + (y - p1.y) * dy) / lenSq;
+                const projectionT = Math.max(0, Math.min(1, t)); 
+                const projectionX = p1.x + projectionT * dx;
+                const projectionY = p1.y + projectionT * dy;
+                const distSq = (x - projectionX) * (x - projectionX) + (y - projectionY) * (y - projectionY);
+
+                if (distSq < minDistanceSq) {
+                    minDistanceSq = distSq;
+                    closestLink = link;
+                }
+            }
+            return closestLink;
+        }
+
+        let isRectSelecting = false;
+        let rectStart = null;
+        let rectCurrent = null;
+        let selectionRect = null;
+        let rectSelectedNodes = new Set();
+        
+        function startRectSelection(clientX, clientY) {
+            isRectSelecting = true;
+            isPanning = false;
+            if (draggedNode) { draggedNode.isDragging = false; draggedNode = null; }
+            rectStart = { x: clientX, y: clientY };
+            rectCurrent = { x: clientX, y: clientY };
+            selectionRect = { x: clientX, y: clientY, w: 0, h: 0 };
+            rectSelectedNodes.clear();
+            canvas.style.cursor = 'crosshair';
+        }
+
+        function updateRectSelection(clientX, clientY) {
+            if (!isRectSelecting) return;
+            rectCurrent = { x: clientX, y: clientY };
+            const x = Math.min(rectStart.x, rectCurrent.x);
+            const y = Math.min(rectStart.y, rectCurrent.y);
+            const w = Math.abs(rectStart.x - rectCurrent.x);
+            const h = Math.abs(rectStart.y - rectCurrent.y);
+            selectionRect = { x, y, w, h };
+        
+            const x1 = (selectionRect.x - panX) / scale;
+            const y1 = (selectionRect.y - panY) / scale;
+            const x2 = (selectionRect.x + selectionRect.w - panX) / scale;
+            const y2 = (selectionRect.y + selectionRect.h - panY) / scale;
+            const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
+            const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
+        
+            rectSelectedNodes.clear();
+            nodes.forEach(n => {
+                const isInRect = n.x >= minX && n.x <= maxX && n.y >= minY && n.y <= maxY;
+                n.isRectSelected = isInRect;
+                if (isInRect) {
+                    rectSelectedNodes.add(n);
+                }
+            });
+        }
+        
+        function finishRectSelection(performDelete) {
+            if (!isRectSelecting) return;
+            isRectSelecting = false;
+            canvas.style.cursor = currentMode === 'default' ? 'grab' : canvas.style.cursor ;
+            
+            nodes.forEach(n => n.isRectSelected = false);
+
+            if (performDelete && rectSelectedNodes.size > 0) {
+                const idsToDelete = new Set(Array.from(rectSelectedNodes).map(n => n.id));
+                for (let i = links.length - 1; i >= 0; i--) {
+                    if (idsToDelete.has(links[i].source.id) || idsToDelete.has(links[i].target.id)) {
+                        links.splice(i, 1);
+                    }
+                }
+                for (let i = nodes.length - 1; i >= 0; i--) {
+                    if (idsToDelete.has(nodes[i].id)) {
+                        nodes.splice(i, 1);
+                    }
+                }
+            }
+            rectStart = rectCurrent = selectionRect = null;
+            rectSelectedNodes.clear();
+        }
+
+
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            const graphMouseX = (mouse.x - panX) / scale;
+            const graphMouseY = (mouse.y - panY) / scale;
+
+            if (currentMode === 'background') {
+                if (e.button === 0) { // Left click
+                    isPanning = true;
+                    lastPanMouseX = e.clientX;
+                    lastPanMouseY = e.clientY;
+                    canvas.style.cursor = 'grabbing';
+                } else if (e.button === 2) { // Right click
+                    // If we're already drawing a bg rect, treat this as the second click -> set endpoint then finish
+                    if (isDrawingBgRect) {
+                        const endPoint = snapPoint ? { x: snapPoint.x, y: snapPoint.y } : { x: graphMouseX, y: graphMouseY };
+                        const s = bgRectStartPoint;
+                        currentBgRect.x = Math.min(s.x, endPoint.x);
+                        currentBgRect.y = Math.min(s.y, endPoint.y);
+                        currentBgRect.w = Math.abs(s.x - endPoint.x);
+                        currentBgRect.h = Math.abs(s.y - endPoint.y);
+                        finishBgRectDraw();
+                    } else if (isTwoClickRectDraw) {
+                        // Two-click completion flow: second click -> use snapPoint as endpoint if available
+                        const endPoint = snapPoint ? { x: snapPoint.x, y: snapPoint.y } : { x: graphMouseX, y: graphMouseY };
+                        const s = bgRectStartPoint;
+                        currentBgRect = {
+                            x: Math.min(s.x, endPoint.x),
+                            y: Math.min(s.y, endPoint.y),
+                            w: Math.abs(s.x - endPoint.x),
+                            h: Math.abs(s.y - endPoint.y),
+                            tag: null,
+                            id: Date.now()
+                        };
+                        isTwoClickRectDraw = false;
+                        finishBgRectDraw();
+                    } else {
+                        // Start drawing a new rect. Use snapPoint if available.
+                        isDrawingBgRect = true;
+                        if (snapPoint) {
+                            bgRectStartPoint = { x: snapPoint.x, y: snapPoint.y };
+                        } else {
+                            bgRectStartPoint = { x: graphMouseX, y: graphMouseY };
+                        }
+                        currentBgRect = { x: bgRectStartPoint.x, y: bgRectStartPoint.y, w: 0, h: 0, tag: null, id: Date.now() };
+                    }
+                }
+                return;
+            }
+
+            if (e.button === 2 && currentMode === 'default' && !isPreviewMode) {
+                 const nodeAt = findNodeAt(graphMouseX, graphMouseY);
+                 if (!nodeAt) {
+                     e.preventDefault();
+                     startRectSelection(e.clientX, e.clientY);
+                     return;
+                 }
+            }
+
+            isPanning = false;
+            const clickedNode = findNodeAt(graphMouseX, graphMouseY);
+            
+            if (shiftKeyPressed && clickedNode && clickedNode.fixType !== 'anchor') {
+                isShiftDragging = true;
+                draggedNode = clickedNode;
+                draggedNode.isDragging = true;
+                draggedNode.vx = 0; 
+                draggedNode.vy = 0;
+                dragStartPos = { x: e.clientX, y: e.clientY };
+                return;
+            }
+
+            if (shiftKeyPressed && !clickedNode) {
+                isPanning = true;
+                lastPanMouseX = e.clientX;
+                lastPanMouseY = e.clientY;
+                canvas.style.cursor = 'grabbing';
+                return;
+            }
+            
+            if (currentMode === 'draw') {
+                if (e.button === 2) { 
+                    isCutting = true;
+                    cutLineStart = { x: graphMouseX, y: graphMouseY };
+                    return; 
+                }
+                
+                if (drawSourceNode) { 
+                    if (clickedNode && clickedNode !== drawSourceNode) {
+                        const linkExists = links.some(link =>
+                            (link.source === drawSourceNode && link.target === clickedNode) ||
+                            (link.source === clickedNode && link.target === drawSourceNode)
+                        );
+                        if (!linkExists) {
+                            links.push({
+                                source: drawSourceNode,
+                                target: clickedNode,
+                                relation: { [drawSourceNode.id]: null, [clickedNode.id]: null },
+                                pulse: null, linkGlowAlpha: 0, lastPulseTime: 0, isHighlighted: false,
+                                opacity: 1, targetOpacity: 1
+                            });
+                            drawSourceNode.connectionCount++;
+                            clickedNode.connectionCount++;
+                            drawSourceNode.radius = drawSourceNode.imageUrl ? imageNodeSize : baseNodeRadius * (1 + drawSourceNode.connectionCount * linkIncreaseRate);
+                            clickedNode.radius = clickedNode.imageUrl ? imageNodeSize : baseNodeRadius * (1 + clickedNode.connectionCount * linkIncreaseRate);
+                        }
+                        isShiftDragging = false;
+                        draggedNode = null;
+                        dragStartPos = null;
+                        drawSourceNode = null; 
+                    } else if (clickedNode && clickedNode === drawSourceNode) {
+                        isShiftDragging = false;
+                        draggedNode = null;
+                        dragStartPos = null;
+                        drawSourceNode = null;
+                    } else if (!clickedNode) {
+                        isPanning = true;
+                        lastPanMouseX = e.clientX;
+                        lastPanMouseY = e.clientY;
+                        canvas.style.cursor = 'grab';
+                    }
+                } else { 
+                    if (clickedNode) {
+                        drawSourceNode = clickedNode; 
+                    } else {
+                        isPanning = true;
+                        lastPanMouseX = e.clientX;
+                        lastPanMouseY = e.clientY;
+                        canvas.style.cursor = 'grab';
+                    }
+                }
+                return; 
+            } 
+            
+            if (e.button !== 0) return;
+            mouse.isDown = true;
+            if (clickedNode) {
+                draggedNode = clickedNode;
+                draggedNode.isDragging = true;
+                draggedNode.vx = 0;
+                draggedNode.vy = 0;
+                nodes.splice(nodes.indexOf(draggedNode), 1);
+                nodes.push(draggedNode);
+                canvas.style.cursor = 'grabbing';
+            } else {
+                isPanning = true;
+                lastPanMouseX = e.clientX;
+                lastPanMouseY = e.clientY;
+                canvas.style.cursor = 'grabbing';
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            const graphMouseX = (mouse.x - panX) / scale;
+            const graphMouseY = (mouse.y - panY) / scale;
+
+            if (isDrawingBgRect || isTwoClickRectDraw) {
+                const start = bgRectStartPoint;
+                const endX = graphMouseX;
+                const endY = graphMouseY;
+                currentBgRect.x = Math.min(start.x, endX);
+                currentBgRect.y = Math.min(start.y, endY);
+                currentBgRect.w = Math.abs(start.x - endX);
+                currentBgRect.h = Math.abs(start.y - endY);
+            }
+
+            // --- Guide Line Logic (New) ---
+            if (currentMode === 'background' && !isDrawingBgRect && !isPanning) {
+                let hoveredBgRect = null;
+                for (let i = backgroundRects.length - 1; i >= 0; i--) {
+                    const r = backgroundRects[i];
+                    if (graphMouseX >= r.x && graphMouseX <= r.x + r.w && graphMouseY >= r.y && graphMouseY <= r.y + r.h) {
+                        hoveredBgRect = r;
+                        break;
+                    }
+                }
+                if (hoveredBgRect) {
+                    referenceBgRect = hoveredBgRect;
+                }
+
+                snapPoint = null;
+                activeGuideLines.corners.fill(false);
+                activeGuideLines.edges.fill(false);
+
+                if (referenceBgRect) {
+                    const proximity = guideProximity / scale;
+                    const r = referenceBgRect;
+                    const corners = [
+                        { x: r.x, y: r.y }, { x: r.x + r.w, y: r.y },
+                        { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }
+                    ];
+
+                    for (let i = 0; i < corners.length; i++) {
+                        const corner = corners[i];
+                        const dist = Math.hypot(corner.x - graphMouseX, corner.y - graphMouseY);
+                        if (dist < proximity) {
+                            activeGuideLines.corners[i] = true;
+                            if (!snapPoint) {
+                                snapPoint = { x: corner.x, y: corner.y };
+                            }
+                        }
+                    }
+
+                    const edges = [
+                        { type: 'h', val: r.y },
+                        { type: 'v', val: r.x + r.w },
+                        { type: 'h', val: r.y + r.h },
+                        { type: 'v', val: r.x }
+                    ];
+
+                    for (let i = 0; i < edges.length; i++) {
+                        const edge = edges[i];
+                        let dist = (edge.type === 'h') ? Math.abs(edge.val - graphMouseY) : Math.abs(edge.val - graphMouseX);
+                        if (dist < proximity) {
+                            activeGuideLines.edges[i] = true;
+                            if (!snapPoint) {
+                                snapPoint = (edge.type === 'h')
+                                    ? { x: graphMouseX, y: edge.val }
+                                    : { x: edge.val, y: graphMouseY };
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (snapPoint) {
+                   snapPoint = null;
+                   activeGuideLines.corners.fill(false);
+                   activeGuideLines.edges.fill(false);
+                }
+            }
+            // --- End Guide Line Logic ---
+
+            if (isRectSelecting) {
+                updateRectSelection(e.clientX, e.clientY);
+                return;
+            }
+
+            if (isPanning) {
+                const dx = e.clientX - lastPanMouseX;
+                const dy = e.clientY - lastPanMouseY;
+                panX += dx;
+                panY += dy;
+                lastPanMouseX = e.clientX;
+                lastPanMouseY = e.clientY;
+            } else if (draggedNode) {
+                draggedNode.x = graphMouseX;
+                draggedNode.y = graphMouseY;
+            } else if (currentMode === 'draw' && isCutting && cutLineStart) {
+                links.forEach(link => {
+                    const p1 = link.source;
+                    const p2 = link.target;
+                    const q1 = cutLineStart;
+                    const q2 = { x: graphMouseX, y: graphMouseY };
+                    
+                    const s1_x = p2.x - p1.x, s1_y = p2.y - p1.y;
+                    const s2_x = q2.x - q1.x, s2_y = q2.y - q1.y;
+                    const det = -s2_x * s1_y + s1_x * s2_y;
+                    if (Math.abs(det) < 1e-6) {
+                        link.isHighlighted = false;
+                        return;
+                    }
+                    const s = (-s1_y * (p1.x - q1.x) + s1_x * (p1.y - q1.y)) / det;
+                    const t = ( s2_x * (p1.y - q1.y) - s2_y * (p1.x - q1.x)) / det;
+
+                    link.isHighlighted = (s >= 0 && s <= 1 && t >= 0 && t <= 1);
+                });
+            } else {
+                 const hoveredNode = findNodeAt(graphMouseX, graphMouseY);
+                 const hoveredLink = findHoveredLink(graphMouseX, graphMouseY);
+                 let newCursor = 'default';
+                 if (currentMode === 'draw') {
+                     if (isCutting) newCursor = 'crosshair';
+                     else newCursor = hoveredNode || hoveredLink ? 'pointer' : 'crosshair';
+                 }
+                 else if (currentMode === 'default') newCursor = hoveredNode ? 'pointer' : 'grab';
+                 else if (currentMode === 'background') newCursor = snapPoint ? 'crosshair' : 'default'; // (New) cursor for snap
+
+                 if (isPanning) newCursor = 'grabbing';
+                 canvas.style.cursor = newCursor;
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (currentMode === 'background') {
+                 if (e.button === 0) { // Left mouse up
+                    isPanning = false;
+                    canvas.style.cursor = 'default';
+                 } else if (e.button === 2) { // Right mouse up
+                    if (isDrawingBgRect) {
+                        if (currentBgRect.w < 5/scale && currentBgRect.h < 5/scale) {
+                            // It's a click, not a drag. Start two-click draw.
+                            isDrawingBgRect = false;
+                            isTwoClickRectDraw = true;
+                        } else {
+                            // It's a drag. Finish drawing.
+                            finishBgRectDraw();
+                        }
+                    }
+                 }
+                 return;
+            }
+
+            if (isRectSelecting && e.button === 2) {
+                finishRectSelection(true);
+                return;
+            }
+            if (isShiftDragging) {
+                const dist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
+                
+                if (dist < 5) { 
+                    draggedNode.isFixed = !draggedNode.isFixed;
+                    draggedNode.fixType = draggedNode.isFixed ? 'shift' : null;
+                } else { 
+                    draggedNode.isFixed = true;
+                    draggedNode.fixType = 'shift';
+                    draggedNode.tempRepulsionUntil = performance.now() + 500;
+                }
+
+                if (draggedNode.isFixed) {
+                    draggedNode.vx = 0;
+                    draggedNode.vy = 0;
+                }
+                
+                draggedNode.isDragging = false;
+                draggedNode = null;
+                isShiftDragging = false;
+                dragStartPos = null;
+                return; 
+            }
+
+            mouse.isDown = false;
+            
+            if (draggedNode) { 
+                draggedNode.isDragging = false; 
+                draggedNode.vx = 0;
+                draggedNode.vy = 0;
+                draggedNode = null; 
+            }
+            
+            if (currentMode === 'draw' && isCutting && cutLineStart && e.button === 2) {
+                for (let i = links.length - 1; i >= 0; i--) {
+                    if (links[i].isHighlighted) { 
+                        links[i].source.connectionCount--;
+                        links[i].target.connectionCount--;
+                        links[i].source.radius = links[i].source.imageUrl ? imageNodeSize : baseNodeRadius * (1 + links[i].source.connectionCount * linkIncreaseRate);
+                        links[i].target.radius = links[i].target.imageUrl ? imageNodeSize : baseNodeRadius * (1 + links[i].target.connectionCount * linkIncreaseRate);
+                        links.splice(i, 1);
+                    }
+                }
+                cutLineStart = null;
+                isCutting = false;
+                links.forEach(link => link.isHighlighted = false);
+            }
+            
+            isPanning = false;
+            canvas.style.cursor = currentMode === 'draw' ? 'crosshair' : 'grab';
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouse.isDown = false;
+            isPanning = false;
+            if (draggedNode) { draggedNode.isDragging = false; draggedNode = null; }
+            if (isCutting) {
+                isCutting = false;
+                cutLineStart = null;
+                links.forEach(l => l.isHighlighted = false);
+            }
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            if (currentMode === 'background') e.preventDefault();
+            const zoomFactor = 1.1;
+            const oldScale = scale;
+            const rect = canvas.getBoundingClientRect();
+
+            const mouseX = (e.clientX - rect.left - panX) / oldScale;
+            const mouseY = (e.clientY - rect.top - panY) / oldScale;
+
+            if (e.deltaY < 0) { scale *= zoomFactor; } else { scale /= zoomFactor; }
+            scale = Math.max(0.1, Math.min(scale, 5));
+            panX = -(mouseX * scale) + (e.clientX - rect.left);
+            panY = -(mouseY * scale) + (e.clientY - rect.top);
+        });
+
+        function handleDoubleClick(e, customGraphX, customGraphY) {
+             if (isPreviewMode && isScreenshotMode) {
+                exitScreenshotMode();
+                return;
+             }
+             if (editingInput || editingRelation) return;
+             
+             let graphMouseX, graphMouseY;
+             let clientX, clientY;
+
+             if (customGraphX !== undefined && customGraphY !== undefined) {
+                graphMouseX = customGraphX;
+                graphMouseY = customGraphY;
+                clientX = e.clientX; 
+                clientY = e.clientY; 
+             } else {
+                const rect = canvas.getBoundingClientRect();
+                graphMouseX = (e.clientX - rect.left - panX) / scale;
+                graphMouseY = (e.clientY - rect.top - panY) / scale;
+                clientX = e.clientX;
+                clientY = e.clientY;
+             }
+
+            if (currentMode === 'background') {
+                for (let i = backgroundRects.length - 1; i >= 0; i--) {
+                    const r = backgroundRects[i];
+                    if (graphMouseX >= r.x && graphMouseX <= r.x + r.w && graphMouseY >= r.y && graphMouseY <= r.y + r.h) {
+                        showBgRectEditModal(r, false);
+                        return; // Found a rect, stop searching
+                    }
+                }
+                return;
+            }
+
+            const clickedNode = findNodeAt(graphMouseX, graphMouseY);
+            
+            if (isPreviewMode) {
+                return;
+            }
+            
+            const targetLinks = (currentMode === 'draw') ? links.filter(l => l.isHighlighted) : links;
+            const clickedLink = findLinkAt(graphMouseX, graphMouseY, targetLinks);
+
+            if (currentMode === 'default') {
+                if (clickedNode) {
+                    editNode(clickedNode, clientX, clientY);
+                } else if (clickedLink) {
+                    editRelation(clickedLink, clientX, clientY);
+                } else {
+                    createNewNode(graphMouseX, graphMouseY, clientX, clientY);
+                }
+            } else if (currentMode === 'draw') {
+                if (clickedNode) {
+                    if (clickedNode.isAnchor && clickedNode.fixType === 'anchor') {
+                        clickedNode.isAnchor = false;
+                        clickedNode.isFixed = false;
+                        clickedNode.fixType = null;
+                        clickedNode.isHighlighted = false;
+                        clickedNode.vx = 0;
+                        clickedNode.vy = 0;
+
+                        links.forEach(link => {
+                            if (link.source === clickedNode || link.target === clickedNode) {
+                                const otherNode = link.source === clickedNode ? link.target : link.source;
+                                if (!otherNode.isAnchor) {
+                                    link.isHighlighted = false;
+                                }
+                            }
+                        });
+                    } else {
+                        clickedNode.isAnchor = true;
+                        clickedNode.isFixed = true;
+                        clickedNode.fixType = 'anchor';
+                        clickedNode.tempRepulsionUntil = performance.now() + 500;
+                        clickedNode.isHighlighted = true;
+                        
+                        links.forEach(link => {
+                            if (link.source === clickedNode || link.target === clickedNode) {
+                                link.isHighlighted = true;
+                            }
+                        });
+                    }
+                } else if (clickedLink) {
+                    editRelation(clickedLink, clientX, clientY);
+                } else {
+                    drawSourceNode = null;
+                }
+            }
+        }
+        
+        canvas.addEventListener('dblclick', (e) => {
+            handleDoubleClick(e);
+        });
+        
+        window.addEventListener('dblclick', (e) => {
+            if (isPreviewMode && isScreenshotMode) {
+                exitScreenshotMode();
+            }
+        });
+
+
+        canvas.addEventListener('click', (e) => {
+            if (!isPreviewMode) return;
+            
+            setTimeout(() => {
+                if (isPanning || draggedNode) return;
+    
+                const rect = canvas.getBoundingClientRect();
+                const graphMouseX = (e.clientX - rect.left - panX) / scale;
+                const graphMouseY = (e.clientY - rect.top - panY) / scale;
+                const clickedNode = findNodeAt(graphMouseX, graphMouseY);
+    
+                if (clickedNode && clickedNode.hyperlink) {
+                     try {
+                        const url = new URL(clickedNode.hyperlink);
+                        if (url.protocol === "http:" || url.protocol === "https:") {
+                            window.open(clickedNode.hyperlink, '_blank');
+                        }
+                    } catch (err) {
+                        console.error("Invalid hyperlink format:", clickedNode.hyperlink);
+                    }
+                }
+            }, 200);
+        });
+        
+        function exportData() {
+            const serializableNodes = nodes.map(node => {
+                const { image, ...rest } = node; 
+                return rest;
+            });
+
+            const serializableLinks = links.map(link => ({
+                sourceId: link.source.id,
+                targetId: link.target.id,
+                relation: link.relation,
+            }));
+
+            const settings = {
+                repulsionStrength: parseFloat(repulsionStrengthEl.value),
+                mouseAttraction: parseFloat(mouseAttractionEl.value),
+                linkIncreaseRate: parseFloat(linkIncreaseRateEl.value),
+                titleSize: parseInt(titleSizeEl.value),
+                relationSize: parseInt(relationSizeEl.value),
+                lineWidth: parseFloat(lineWidthEl.value),
+                maxLinkDistance: parseInt(maxLinkDistanceEl.value),
+                imageNodeSize: parseInt(imageNodeSizeEl.value),
+                isPulseAnimationEnabled: isPulseAnimationEnabled,
+                isImageClippingEnabled: isImageClippingEnabled,
+                showAllRelations: showAllRelations,
+                isArrowVisible: isArrowVisible,
+                arrowSize: parseInt(arrowSizeEl.value),
+                bgRectTitleSize: parseInt(bgRectTitleSizeEl.value),
+                lineColor: lineColor,
+            };
+
+            const viewState = {
+                scale: scale,
+                centerX: (width / 2 - panX) / scale,
+                centerY: (height / 2 - panY) / scale
+            };
+
+            const dataToExport = {
+                graphTitle: savedGraphTitle,
+                nodes: serializableNodes,
+                links: serializableLinks,
+                tags: tags,
+                backgroundRects: backgroundRects,
+                nextNodeId: nextNodeId,
+                settings: settings,
+                viewState: viewState
+            };
+
+            const jsonString = JSON.stringify(dataToExport, null, 2); 
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            const fileName = savedGraphTitle.trim() ? `${savedGraphTitle.trim()}.json` : 'graph-data.json';
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function loadData(jsonString) {
+            try {
+                const data = JSON.parse(jsonString);
+
+                if (!data.nodes || !data.links || !data.tags || !Array.isArray(data.nodes) || !Array.isArray(data.links) || !Array.isArray(data.tags)) {
+                    throw new Error('Invalid data format.');
+                }
+                
+                nodes.length = 0;
+                links.length = 0;
+                tags.length = 0;
+                backgroundRects.length = 0;
+                clearTagColorCache();
+
+                graphTitle = data.graphTitle || '';
+                savedGraphTitle = data.graphTitle || '';
+                graphTitleInput.value = graphTitle;
+                updateSaveTitleButtonUI();
+
+                tags.push(...data.tags);
+                if (data.backgroundRects && Array.isArray(data.backgroundRects)) {
+                    backgroundRects.push(...data.backgroundRects);
+                }
+
+                data.nodes.forEach(nodeData => {
+                    const newNode = { ...nodeData, image: null, isSearchResult: false, isRectSelected: false, fixType: nodeData.fixType || null, opacity: 1, targetOpacity: 1 };
+                    if (newNode.imageUrl) {
+                        newNode.image = new Image();
+                        newNode.image.onload = () => {
+                            newNode.radius = imageNodeSize;
+                            newNode.originalWidth = newNode.image.naturalWidth;
+                            newNode.originalHeight = newNode.image.naturalHeight;
+                        };
+                        newNode.image.onerror = () => {
+                            console.error(`Failed to load image: ${newNode.imageUrl}`);
+                            newNode.imageUrl = null;
+                            newNode.image = null;
+                            newNode.radius = baseNodeRadius * (1 + newNode.connectionCount * linkIncreaseRate);
+                        };
+                        newNode.image.src = newNode.imageUrl;
+                    }
+                    nodes.push(newNode);
+                });
+
+                const nodeMap = new Map(nodes.map(n => [n.id, n]));
+
+                data.links.forEach(linkData => {
+                    const sourceNode = nodeMap.get(linkData.sourceId);
+                    const targetNode = nodeMap.get(linkData.targetId);
+
+                    if (sourceNode && targetNode) {
+                        links.push({
+                            source: sourceNode,
+                            target: targetNode,
+                            relation: linkData.relation,
+                            pulse: null,
+                            linkGlowAlpha: 0,
+                            lastPulseTime: 0,
+                            isHighlighted: sourceNode.isAnchor || targetNode.isAnchor,
+                            opacity: 1,
+                            targetOpacity: 1
+                        });
+                    } else {
+                        console.warn(`Could not find nodes for link: sourceId=${linkData.sourceId}, targetId=${linkData.targetId}`);
+                    }
+                });
+                
+                nextNodeId = data.nextNodeId || (nodes.length > 0 ? Math.max(...nodes.map(n => n.id)) + 1 : 0);
+                
+                if (data.settings) {
+                    const settings = data.settings;
+                    repulsionStrengthEl.value = settings.repulsionStrength ?? 1;
+                    mouseAttractionEl.value = settings.mouseAttraction ?? 0.05;
+                    linkIncreaseRateEl.value = settings.linkIncreaseRate ?? 5;
+                    titleSizeEl.value = settings.titleSize ?? 10;
+                    relationSizeEl.value = settings.relationSize ?? 10;
+                    lineWidthEl.value = settings.lineWidth ?? 0.5;
+                    maxLinkDistanceEl.value = settings.maxLinkDistance ?? 200;
+                    imageNodeSizeEl.value = settings.imageNodeSize ?? 30;
+                    isPulseAnimationEnabled = settings.isPulseAnimationEnabled ?? true;
+                    isImageClippingEnabled = settings.isImageClippingEnabled ?? true;
+                    showAllRelations = settings.showAllRelations ?? false;
+                    isArrowVisible = settings.isArrowVisible ?? true;
+                    arrowSizeEl.value = settings.arrowSize ?? 8;
+                    bgRectTitleSizeEl.value = settings.bgRectTitleSize ?? 14;
+                    lineColor = settings.lineColor ?? defaultLineColor;
+                    lineColorInput.value = lineColor;
+
+                    document.querySelectorAll('input[type="range"]').forEach(slider => {
+                        slider.dispatchEvent(new Event('input', { bubbles: true }));
+                    });
+                    
+                    updatePulseButtonUI();
+                    updateImageClipButtonUI();
+                    updateRelationsButtonUI();
+                    updateArrowButtonUI();
+                }
+
+                if (data.viewState) {
+                    scale = data.viewState.scale ?? 1;
+                    if (data.viewState.centerX !== undefined && data.viewState.centerY !== undefined) {
+                        const centerX = data.viewState.centerX;
+                        const centerY = data.viewState.centerY;
+                        panX = (width / 2) - (centerX * scale);
+                        panY = (height / 2) - (centerY * scale);
+                    } else if (data.viewState.panX !== undefined) {
+                        panX = data.viewState.panX;
+                        panY = data.viewState.panY;
+                    }
+                } else {
+                    panX = 0;
+                    panY = 0;
+                    scale = 1;
+                }
+
+                updateTagListUI();
+                showNotification('Data imported successfully!');
+                } catch (error) {
+                console.error('Failed to import data:', error);
+                showNotification(`Import failed: ${error.message}`, true);
+                initializeDefaultGraph();
+            }
+        }
+        
+        async function loadDataFromUrl(url) {
+            try {
+                const response = await fetch(url, { mode: 'cors' });
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                const jsonString = await response.text();
+                loadData(jsonString); 
+            } catch (error) {
+                console.error('Failed to load data from URL:', error);
+                initializeDefaultGraph(); 
+            }
+        }
+        
+        exportBtn.addEventListener('click', exportData);
+        
+        importBtn.addEventListener('click', () => {
+            importFileInput.click();
+        });
+
+        importFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                loadData(content);
+            };
+            reader.onerror = (e) => {
+                console.error("Error reading file:", e);
+                showNotification("Error reading file", true);
+                };
+            reader.readAsText(file);
+
+            event.target.value = null;
+        });
+
+        searchBtn.addEventListener('click', () => {
+            if (searchBtn.classList.contains('cancel-search')) {
+                searchInput.value = '';
+                nodes.forEach(node => node.isSearchResult = false);
+                searchBtn.classList.remove('cancel-search');
+                searchBtn.innerHTML = svgSearch;
+            } else {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                if (searchTerm === '') {
+                    nodes.forEach(node => node.isSearchResult = false);
+                    return;
+                }
+                let foundResult = false;
+                nodes.forEach(node => {
+                    const isMatch = node.name.toLowerCase().includes(searchTerm);
+                    node.isSearchResult = isMatch;
+                    if (isMatch) {
+                        foundResult = true;
+                    }
+                });
+
+                if (foundResult) {
+                    searchBtn.classList.add('cancel-search');
+                    searchBtn.innerHTML = svgCancel;
+                }
+            }
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.trim() === '') {
+                nodes.forEach(node => node.isSearchResult = false);
+                searchBtn.classList.remove('cancel-search');
+                searchBtn.innerHTML = svgSearch;
+            }
+        });
+
+        function getTouchDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touches = e.touches;
+            const rect = canvas.getBoundingClientRect();
+
+            if (touches.length >= 2) {
+                isZooming = true;
+                isPanning = false;
+                if (draggedNode) draggedNode.isDragging = false;
+                draggedNode = null;
+                clearTimeout(longPressTimeout);
+                longPressTimeout = null;
+                lastTouchDistance = getTouchDistance(touches[0], touches[1]);
+                return;
+            }
+
+            if (touches.length === 1) {
+                const touch = touches[0];
+                mouse.x = touch.clientX - rect.left;
+                mouse.y = touch.clientY - rect.top;
+                const graphMouseX = (mouse.x - panX) / scale;
+                const graphMouseY = (mouse.y - panY) / scale;
+                touchStartPos = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+
+                const now = new Date().getTime();
+                if (now - lastTap < 300) {
+                    clearTimeout(longPressTimeout);
+                    longPressTimeout = null;
+                    const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY };
+                    handleDoubleClick(fakeEvent, graphMouseX, graphMouseY);
+                    lastTap = 0;
+                    return;
+                }
+                lastTap = now;
+                
+                const tappedNode = findNodeAt(graphMouseX, graphMouseY);
+                
+                if (currentMode === 'background') {
+                     isPanning = true;
+                     lastPanMouseX = touch.clientX;
+                     lastPanMouseY = touch.clientY;
+                     longPressTimeout = setTimeout(() => {
+                        isPanning = false;
+                        if (navigator.vibrate) navigator.vibrate(40);
+                        isDrawingBgRect = true;
+                        bgRectStartPoint = { x: graphMouseX, y: graphMouseY };
+                        currentBgRect = { ...bgRectStartPoint, w: 0, h: 0, tag: null, id: Date.now() };
+                        longPressTimeout = null;
+                     }, 600);
+                } else if (currentMode === 'draw') {
+                    if (tappedNode) {
+                        drawSourceNode = tappedNode;
+                    } else {
+                        isPanning = true;
+                        lastPanMouseX = touch.clientX;
+                        lastPanMouseY = touch.clientY;
+                        longPressTimeout = setTimeout(() => {
+                           isPanning = false; 
+                           if (isZooming) return;
+                           isCutting = true;
+                           cutLineStart = { x: graphMouseX, y: graphMouseY };
+                           longPressTimeout = null;
+                           if (window.navigator && window.navigator.vibrate) {
+                               window.navigator.vibrate(50);
+                           }
+                        }, 500);
+                    }
+                } else if (currentMode === 'default' && !isPreviewMode) {
+                    if (tappedNode) {
+                        draggedNode = tappedNode;
+                        draggedNode.isDragging = true;
+                        draggedNode.vx = 0; 
+                        draggedNode.vy = 0;
+                    } else {
+                        isPanning = true;
+                        lastPanMouseX = touch.clientX;
+                        lastPanMouseY = touch.clientY;
+                        longPressTimeout = setTimeout(() => {
+                           if (navigator.vibrate) navigator.vibrate(40);
+                           startRectSelection(touch.clientX, touch.clientY);
+                           longPressTimeout = null;
+                        }, 600);
+                    }
+                } else {
+                     if (tappedNode) {
+                        draggedNode = tappedNode;
+                        draggedNode.isDragging = true;
+                     } else {
+                        isPanning = true;
+                        lastPanMouseX = touch.clientX;
+                        lastPanMouseY = touch.clientY;
+                     }
+                }
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touches = e.touches;
+            const rect = canvas.getBoundingClientRect();
+
+            if (longPressTimeout && touches.length === 1 && touchStartPos) {
+                const touch = touches[0];
+                const dist = Math.hypot(touch.clientX - touchStartPos.x, touch.clientY - touchStartPos.y);
+                if (dist > 10) { 
+                    clearTimeout(longPressTimeout);
+                    longPressTimeout = null;
+                }
+            }
+
+            if (isDrawingBgRect && touches.length === 1) {
+                const touch = touches[0];
+                const graphMouseX = (touch.clientX - rect.left - panX) / scale;
+                const graphMouseY = (touch.clientY - rect.top - panY) / scale;
+                const start = bgRectStartPoint;
+                currentBgRect.x = Math.min(start.x, graphMouseX);
+                currentBgRect.y = Math.min(start.y, graphMouseY);
+                currentBgRect.w = Math.abs(start.x - graphMouseX);
+                currentBgRect.h = Math.abs(start.y - graphMouseY);
+                return;
+            }
+
+            if (isRectSelecting && touches.length === 1) {
+                const t = touches[0];
+                updateRectSelection(t.clientX, t.clientY);
+                return;
+            }
+            
+            if (touches.length >= 2) {
+                isZooming = true;
+                const currentDist = getTouchDistance(touches[0], touches[1]);
+                if (lastTouchDistance) {
+                    const zoomFactor = currentDist / lastTouchDistance;
+                    const midX = (touches[0].clientX + touches[1].clientX) / 2;
+                    const midY = (touches[0].clientY + touches[1].clientY) / 2;
+
+                    const oldScale = scale;
+                    const mouseX = (midX - rect.left - panX) / oldScale;
+                    const mouseY = (midY - rect.top - panY) / oldScale;
+                    
+                    scale *= zoomFactor;
+                    scale = Math.max(0.1, Math.min(scale, 5));
+
+                    panX = -(mouseX * scale) + (midX - rect.left);
+                    panY = -(mouseY * scale) + (midY - rect.top);
+                }
+                lastTouchDistance = currentDist;
+                return;
+            }
+
+            if (touches.length === 1) {
+                const touch = touches[0];
+                mouse.x = touch.clientX - rect.left;
+                mouse.y = touch.clientY - rect.top;
+                
+                if (draggedNode) {
+                    const graphMouseX = (mouse.x - panX) / scale;
+                    const graphMouseY = (mouse.y - panY) / scale;
+                    draggedNode.x = graphMouseX;
+                    draggedNode.y = graphMouseY;
+                } else if (isPanning) { 
+                    const dx = touch.clientX - lastPanMouseX;
+                    const dy = touch.clientY - lastPanMouseY;
+                    panX += dx;
+                    panY += dy;
+                    lastPanMouseX = touch.clientX;
+                    lastPanMouseY = touch.clientY;
+                } else if (isCutting && cutLineStart) {
+                    const graphMouseX = (mouse.x - panX) / scale;
+                    const graphMouseY = (mouse.y - panY) / scale;
+                    links.forEach(link => {
+                        const p1 = link.source;
+                        const p2 = link.target;
+                        const q1 = cutLineStart;
+                        const q2 = { x: graphMouseX, y: graphMouseY };
+                        
+                        const s1_x = p2.x - p1.x;
+                        const s1_y = p2.y - p1.y;
+                        const s2_x = q2.x - q1.x;
+                        const s2_y = q2.y - q1.y;
+                        const det = (-s2_x * s1_y + s1_x * s2_y);
+                        if (Math.abs(det) < 1e-6) {
+                            link.isHighlighted = false; return;
+                        }
+                        const s = (-s1_y * (p1.x - q1.x) + s1_x * (p1.y - q1.y)) / det;
+                        const t = ( s2_x * (p1.y - q1.y) - s2_y * (p1.x - q1.x)) / det;
+                        link.isHighlighted = (s >= 0 && s <= 1 && t >= 0 && t <= 1);
+                    });
+                }
+            }
+        }, { passive: false });
+        
+        const handleTouchEnd = (e) => {
+            e.preventDefault();
+            clearTimeout(longPressTimeout);
+            longPressTimeout = null;
+
+            if (isDrawingBgRect) {
+                finishBgRectDraw();
+                return;
+            }
+
+            if (isRectSelecting) {
+                finishRectSelection(true);
+                return;
+            }
+
+            if (isPreviewMode && touchStartPos) {
+                const timeElapsed = Date.now() - touchStartPos.time;
+                const touch = e.changedTouches[0];
+                const dist = Math.hypot(touch.clientX - touchStartPos.x, touch.clientY - touchStartPos.y);
+
+                if (timeElapsed < 250 && dist < 10) {
+                    const rect = canvas.getBoundingClientRect();
+                    const graphMouseX = (touch.clientX - rect.left - panX) / scale;
+                    const graphMouseY = (touch.clientY - rect.top - panY) / scale;
+                    const tappedNode = findNodeAt(graphMouseX, graphMouseY);
+
+                    if (tappedNode && tappedNode.hyperlink) {
+                        try {
+                           window.open(tappedNode.hyperlink, '_blank');
+                        } catch (err) {
+                            console.error("Invalid hyperlink format:", tappedNode.hyperlink);
+                        }
+                    }
+                }
+            }
+            
+            const touch = e.changedTouches[0];
+            if (touch) {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = touch.clientX - rect.left;
+                mouse.y = touch.clientY - rect.top;
+                const graphMouseX = (mouse.x - panX) / scale;
+                const graphMouseY = (mouse.y - panY) / scale;
+    
+                if (currentMode === 'draw' && drawSourceNode) {
+                    const targetNode = findNodeAt(graphMouseX, graphMouseY);
+                    if (targetNode && targetNode !== drawSourceNode) {
+                         const linkExists = links.some(link =>
+                            (link.source === drawSourceNode && link.target === targetNode) ||
+                            (link.source === targetNode && link.target === drawSourceNode)
+                        );
+                        if (!linkExists) {
+                            links.push({
+                                source: drawSourceNode, target: targetNode,
+                                relation: { [drawSourceNode.id]: null, [targetNode.id]: null },
+                                pulse: null, linkGlowAlpha: 0, lastPulseTime: 0, isHighlighted: false
+                            });
+                            drawSourceNode.connectionCount++; targetNode.connectionCount++;
+                            drawSourceNode.radius = drawSourceNode.imageUrl ? imageNodeSize : baseNodeRadius * (1 + drawSourceNode.connectionCount * linkIncreaseRate);
+                            targetNode.radius = targetNode.imageUrl ? imageNodeSize : baseNodeRadius * (1 + targetNode.connectionCount * linkIncreaseRate);
+                        }
+                    }
+                }
+    
+                if (currentMode === 'draw' && isCutting) {
+                     for (let i = links.length - 1; i >= 0; i--) {
+                        if (links[i].isHighlighted) { 
+                            links[i].source.connectionCount--;
+                            links[i].target.connectionCount--;
+                            links[i].source.radius = links[i].source.imageUrl ? imageNodeSize : baseNodeRadius * (1 + links[i].source.connectionCount * linkIncreaseRate);
+                            links[i].target.radius = links[i].target.imageUrl ? imageNodeSize : baseNodeRadius * (1 + links[i].target.connectionCount * linkIncreaseRate);
+                            links.splice(i, 1);
+                        }
+                    }
+                }
+            }
+
+            nodes.forEach(n => {
+                if (n.isDragging) {
+                    n.isDragging = false;
+                    n.vx = 0;
+                    n.vy = 0;
+                }
+            });
+            draggedNode = null;
+            
+            if (isCutting) {
+                isCutting = false;
+                cutLineStart = null;
+                links.forEach(link => link.isHighlighted = false);
+            }
+            drawSourceNode = null;
+            isPanning = false;
+            lastTouchDistance = null;
+            touchStartPos = null;
+            
+            if (e.touches.length < 2) {
+                isZooming = false;
+            }
+
+            if (e.touches.length === 1) {
+                const remainingTouch = e.touches[0];
+                isPanning = true;
+                lastPanMouseX = remainingTouch.clientX;
+                lastPanMouseY = remainingTouch.clientY;
+            }
+        };
+
+        canvas.addEventListener('touchend', handleTouchEnd);
+        canvas.addEventListener('touchcancel', handleTouchEnd);
+
+    window.onload = async function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        isPreviewMode = urlParams.has('preview');
+
+        if (isPreviewMode) {
+            document.body.classList.add('preview-mode');
+            const previewPanel = document.getElementById('preview-info-panel');
+            if (previewPanel) {
+                makeDraggable(previewPanel);
+                makeResizable(previewPanel); // NEW: Make panel resizable
+            }
+        }
+
+        updatePulseButtonUI();
+        updateImageClipButtonUI();
+        updateRelationsButtonUI();
+        updateArrowButtonUI(); 
+        updateSaveTitleButtonUI();
+
+        const dataUrl = urlParams.get('dataUrl');
+
+        if (dataUrl) {
+            await loadDataFromUrl(dataUrl);
+        } else {
+            initializeDefaultGraph();
+        }
+        
+        update();
+    };
+
+const previewToggleBtn = document.getElementById('preview-info-toggle');
+const screenshotModeBtn = document.getElementById('screenshot-mode-btn'); // NEW
+const previewPanel = document.getElementById('preview-info-panel');
+const eyeOpenIcon = document.getElementById('eye-icon-open');
+const eyeClosedIcon = document.getElementById('eye-icon-closed');
+
+// --- NEW: Screenshot mode functions ---
+function enterScreenshotMode() {
+    if (isScreenshotMode) return;
+    isScreenshotMode = true;
+    isGraphPaused = true;
+    previewToggleBtn.style.display = 'none';
+
+    if (!window.originalDPR) {
+        window.originalDPR = window.devicePixelRatio || 1;
+    }
+
+    dpr = window.originalDPR * 2.5;
+    resizeCanvas();
+    draw(); // Redraw immediately with high resolution
+}
+
+function exitScreenshotMode() {
+    if (!isScreenshotMode) return;
+    isScreenshotMode = false;
+    isGraphPaused = (currentMode === 'background'); // Restore pause state
+    previewToggleBtn.style.display = 'block';
+
+    dpr = window.originalDPR || window.devicePixelRatio || 1;
+    resizeCanvas();
+}
+
+function populatePreviewInfoPanel() {
+    const titleEl = document.getElementById('preview-title');
+    const tagListEl = document.getElementById('preview-tag-list');
+    
+    titleEl.textContent = graphTitle || 'Untitled Graph';
+    tagListEl.innerHTML = '';
+    
+    if (tags.length === 0) {
+         const noTagsItem = document.createElement('div');
+         noTagsItem.textContent = 'No tags';
+         noTagsItem.style.opacity = '0.7';
+         tagListEl.appendChild(noTagsItem);
+    } else {
+        tags.forEach(tag => {
+            const tagItem = document.createElement('div');
+            tagItem.className = 'preview-tag-item';
+
+            const colorSwatch = document.createElement('div');
+            colorSwatch.className = 'preview-tag-color';
+            colorSwatch.style.backgroundColor = tag.color;
+
+            const tagName = document.createElement('span');
+            tagName.textContent = tag.name;
+
+            tagItem.appendChild(colorSwatch);
+            tagItem.appendChild(tagName);
+            tagListEl.appendChild(tagItem);
+        });
+    }
+}
+
+if (previewToggleBtn) {
+    previewToggleBtn.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+    previewToggleBtn.addEventListener('click', (e) => {
+        // Prevent click from propagating to icon children if they are the target
+        if (e.target.closest('svg') !== previewToggleBtn) {
+            const isVisible = previewPanel.style.display === 'block';
+            if (isVisible) {
+                previewPanel.style.display = 'none';
+                eyeOpenIcon.style.display = 'block';
+                eyeClosedIcon.style.display = 'none';
+            } else {
+                populatePreviewInfoPanel();
+                previewPanel.style.display = 'block';
+                eyeOpenIcon.style.display = 'none';
+                eyeClosedIcon.style.display = 'block';
+            }
+        }
+    });
+}
+
+if(screenshotModeBtn) {
+    screenshotModeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        enterScreenshotMode();
+    });
+}
+
+
+function makeDraggable(elmnt) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+  const closeDragElement = () => {
+    window.removeEventListener('mouseup', closeDragElement);
+    window.removeEventListener('touchend', closeDragElement);
+    window.removeEventListener('mousemove', elementDrag);
+    window.removeEventListener('touchmove', elementDrag);
+  };
+
+  const elementDrag = (e) => {
+    e.preventDefault();
+    
+    let clientX, clientY;
+    if (e.type === 'touchmove') {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+    }
+
+    pos1 = pos3 - clientX;
+    pos2 = pos4 - clientY;
+    pos3 = clientX;
+    pos4 = clientY;
+    
+    let newTop = elmnt.offsetTop - pos2;
+    let newLeft = elmnt.offsetLeft - pos1;
+
+    elmnt.style.top = newTop + "px";
+    elmnt.style.left = newLeft + "px";
+  };
+  
+  const dragMouseDown = (e) => {
+    if (e.target.closest('#preview-tag-list') || e.target.classList.contains('resizer')) {
+        return;
+    }
+
+    e.preventDefault();
+
+    if (e.type === 'touchstart') {
+        pos3 = e.touches[0].clientX;
+        pos4 = e.touches[0].clientY;
+    } else {
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+    }
+
+    window.addEventListener('mouseup', closeDragElement);
+    window.addEventListener('touchend', closeDragElement);
+    window.addEventListener('mousemove', elementDrag);
+    window.addEventListener('touchmove', elementDrag, { passive: false });
+  };
+  
+  elmnt.addEventListener('mousedown', dragMouseDown);
+  elmnt.addEventListener('touchstart', dragMouseDown, { passive: false });
+}
+
+// NEW: Function to make the preview tag list resizable
+function makeResizable(panel) {
+    const tagList = panel.querySelector('#preview-tag-list');
+    const resizer = document.createElement('div');
+    resizer.className = 'resizer';
+    panel.appendChild(resizer);
+    
+    let startY, startHeight;
+
+    const doDrag = (e) => {
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const newHeight = startHeight + clientY - startY;
+        tagList.style.height = Math.max(30, newHeight) + 'px'; // Set a min height
+    };
+
+    const stopDrag = () => {
+        window.removeEventListener('mousemove', doDrag);
+        window.removeEventListener('mouseup', stopDrag);
+        window.removeEventListener('touchmove', doDrag);
+        window.removeEventListener('touchend', stopDrag);
+    };
+
+    const initDrag = (e) => {
+        e.preventDefault();
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        startHeight = parseInt(document.defaultView.getComputedStyle(tagList).height, 10);
+        window.addEventListener('mousemove', doDrag);
+        window.addEventListener('mouseup', stopDrag);
+        window.addEventListener('touchmove', doDrag, { passive: false });
+        window.addEventListener('touchend', stopDrag);
+    };
+
+    resizer.addEventListener('mousedown', initDrag);
+    resizer.addEventListener('touchstart', initDrag, { passive: false });
+}
+
+// --- Background Rect Functions ---
+function finishBgRectDraw() {
+    isDrawingBgRect = false;
+    isTwoClickRectDraw = false;
+    if (currentBgRect && currentBgRect.w > 5/scale && currentBgRect.h > 5/scale) {
+        showBgRectEditModal(currentBgRect, true);
+    } else {
+        currentBgRect = null; // Discard if it's too small (just a click)
+    }
+}
+
+function showBgRectEditModal(rect, isNew) {
+    // Prevent multiple modals
+    const existingModal = document.querySelector('.bg-rect-edit-container');
+    if (existingModal) existingModal.remove();
+
+    editingBgRect = rect;
+    const centerX = rect.x + rect.w / 2;
+    const centerY = rect.y + rect.h / 2;
+    const clientX = (centerX * scale + panX);
+    const clientY = (centerY * scale + panY);
+
+    const container = document.createElement('div');
+    container.className = 'bg-rect-edit-container';
+    
+    container.addEventListener('mousedown', e => e.stopPropagation());
+    container.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+
+    const tagSelector = document.createElement('select');
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "Default / No Tag";
+    tagSelector.appendChild(defaultOption);
+    tags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag.name;
+        option.textContent = tag.name;
+        if (rect.tag === tag.name) option.selected = true;
+        tagSelector.appendChild(option);
+    });
+    container.appendChild(tagSelector);
+    
+    // Live update color when selecting tag
+    tagSelector.addEventListener('change', () => {
+        if (editingBgRect) {
+            editingBgRect.tag = tagSelector.value === "" ? null : tagSelector.value;
+        }
+    });
+
+    const buttonGroup = document.createElement('div');
+    buttonGroup.style.display = 'flex';
+    buttonGroup.style.gap = '8px';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'bg-rect-save-btn';
+    saveBtn.innerHTML = isNew ? svgConfirmSave : svgConfirmCheck;
+    buttonGroup.appendChild(saveBtn);
+
+    const actionBtn = document.createElement('button');
+    actionBtn.className = 'bg-rect-delete-btn';
+    actionBtn.innerHTML = isNew ? svgCancel : svgDelete;
+    buttonGroup.appendChild(actionBtn);
+    
+    container.appendChild(buttonGroup);
+
+    const cleanUp = () => {
+        container.remove();
+        editingBgRect = null;
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+
+    const handleClickOutside = (e) => {
+        if (!container.contains(e.target)) {
+            if (isNew) {
+                 currentBgRect = null;
+            }
+            cleanUp();
+        }
+    };
+
+    saveBtn.addEventListener('click', () => {
+        rect.tag = tagSelector.value === "" ? null : tagSelector.value;
+        if (isNew) {
+            backgroundRects.push(rect);
+            currentBgRect = null;
+        }
+        cleanUp();
+    });
+
+    actionBtn.addEventListener('click', () => {
+        if (isNew) {
+            currentBgRect = null;
+        } else {
+            const rectIndex = backgroundRects.findIndex(r => r.id === rect.id);
+            if (rectIndex > -1) {
+                backgroundRects.splice(rectIndex, 1);
+            }
+        }
+        cleanUp();
+    });
+    
+    container.style.left = `${clientX}px`;
+    container.style.top = `${clientY}px`;
+    document.body.appendChild(container);
+
+    setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+    }, 0);
+}
+
+
+</script>
+
+</body>
+
+</html>
