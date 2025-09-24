@@ -76,8 +76,8 @@
 - **E**：侧边栏  
 
 ## 地址栏参数  
-- **指定 JSON 文件**：  https://yourdomainname?**dataUrl=本地或网页json文件**
-- **预览模式**：  https://yourdomainname?dataUrl=本地或网页json文件&**preview**（可显示 tag 对照表，并支持截取图片）
+- **指定 JSON 文件**：  https: //yourdomainname?**dataUrl=本地或网页json文件**
+- **预览模式**：  https: //yourdomainname?dataUrl=本地或网页json文件&**preview**（可显示 tag 对照表，并支持截取图片）
 ## 数据管理  
 - 一键导出 JSON 文件。  
 - 网页截屏保存为图片：  
